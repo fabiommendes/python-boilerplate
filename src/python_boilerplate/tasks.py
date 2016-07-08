@@ -1,10 +1,11 @@
 from invoke import run, task
-import sys
 
 
 @task
 def build(no_docs=False):
-    """Build python package and docs"""
+    """
+    Build python package and docs.
+    """
 
     run("python setup.py build")
     if not no_docs:
@@ -13,7 +14,9 @@ def build(no_docs=False):
 
 @task
 def bump_version(major=False, minor=False, micro=False):
-    """Bump the version number in the VERSION file"""
+    """
+    Bump the version number in the VERSION file.
+    """
 
     from distutils.version import LooseVersion
 
@@ -87,7 +90,9 @@ def coverage():
 
 @task
 def lint():
-    """Run the linter"""
+    """
+    Run the linter
+    """
     print('not ready...')
 
 

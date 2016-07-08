@@ -35,7 +35,7 @@ setup(
 
     # Classifiers (see http://...)
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: POSIX',
@@ -46,9 +46,16 @@ setup(
     # Packages and depencies
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    install_requires=['jinja2', 'invoke', 'unidecode'],
+    install_requires=[
+        'jinja2',
+        'invoke',
+        'unidecode'
+    ],
     extras_require={
-        'testing': ['pytest'],
+        'testing': [
+            'pytest',
+            'mock',
+        ],
     },
 
     # Data files

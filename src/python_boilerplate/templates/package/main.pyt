@@ -1,10 +1,17 @@
 import argparse
 import {{ pyname }}
+from {{ pyname }} import __version__
 
 
-# Create an argument parser.
-parser = argparse.ArgumentParser('{{ dashed_pyname }}')
+def get_parser():
+    """
+    Creates a new argument parser.
+    """
 
+    parser = argparse.ArgumentParser('{{ project }}')
+    parser.add_argument('--version', '-v', action='version',
+                        version='%(prog)s ' + __version__)
+    return parser
 
 def main(args=None):
     """Main entry point for your project.
@@ -17,6 +24,7 @@ def main(args=None):
         use sys.argv.
     """
 
+    parser = get_parser()
     args = parser.parse_args(args)
 
     # Put your main script logic here
