@@ -1,0 +1,8 @@
+include INSTALL.rst
+include README.rst
+include LICENSE
+include VERSION
+include requirements.txt
+include requirements-dev.txt
+include tasks.py
+recursive-include src/boilerplate *
