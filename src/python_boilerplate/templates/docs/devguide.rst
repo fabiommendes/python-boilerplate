@@ -4,51 +4,54 @@ Developer's guide
 
 .. topic:: Abstract
 
-   This document describes the development process of {{ project }}.
-   {{ short_description }}
+   This document describes the development process of {{ project }}. You can
+   make a local copy of the repository with::
 
-The {{ project }} source code is managed using Git and is hosted on Github.
-
-    git clone git://github.com/{{ github_user }}/{{ github_name }}
+      git clone git://github.com/{{ github_user }}/{{ github_name }}
 
 .. rubric:: Community
 
-sphinx-users <sphinx-users@googlegroups.com>
-    Mailing list for user support.
+   Please go to https://github.com/{{ github_page }}/ to
+   participate.
 
-sphinx-dev <sphinx-dev@googlegroups.com>
-    Mailing list for development related discussions.
+.. If your project is large enough, you might want to create an structure like
+   the one bellow. Until then, all action can take place at Github.
+   {% set slug = pyname|replace('_', '-') %}
 
-#sphinx-doc on irc.freenode.net
-    IRC channel for development questions and user support.
+.. {{slug}}-users <{{slug}}-users@googlegroups.com>
+       Mailing list for user support.
+
+.. {{slug}}-dev <{{slug}}-dev@googlegroups.com>
+       Mailing list for development related discussions.
+
+.. #{{slug}}-doc on irc.freenode.net
+      IRC channel for development questions and user support.
 
 
 Bug Reports and Feature Requests
 --------------------------------
 
-If you have encountered a problem with Sphinx or have an idea for a new
+If you have encountered a problem with {{ project }} or have an idea for a new
 feature, please submit it to the `issue tracker`_ on Github or discuss it
 on the sphinx-dev mailing list.
 
-For bug reports, please include the output produced during the build process
-and also the log file Sphinx creates after it encounters an un-handled
-exception.  The location of this file should be shown towards the end of the
-error message.
+For bug reports, please execute the command ``python -m {{ pyname }}.tests`` and
+check if all tests fail. You must have all development dependencies installed,
+which can be obtained through pip executing ``pip install {{project}}[dev]``.
+Of course, you might want to adapt these commands to the correct python/pip
+versions installed in you system.
 
-Including or providing a link to the source files involved may help us fix the
-issue.  If possible, try to create a minimal project that produces the error
-and post that instead.
-
-.. _`issue tracker`: https://github.com/{{github_page}}/issues
+.. _`issue tracker`: https://github.com/{{ github_page }}/issues
 
 
 Non coding contributions
 ------------------------
 
-If
+Besides code and bug reports, you can also contribute with this project by
+writing documentation.
 
-Contributing to Sphinx
-----------------------
+Contributing to {{project}}
+----------------{{project|line('-')}}
 
 The recommended way for new contributors to submit code is to fork
 the repository on Github and then submit a pull request after
@@ -58,7 +61,7 @@ of the core developers before it is merged into the main repository.
 #. Check for open issues or open a fresh issue to start a discussion around a
    feature idea or a bug.
 #. If you feel uncomfortable or uncertain about an issue or your changes, feel
-   free to email sphinx-dev@googlegroups.com.
+   free to contact us on git.
 #. Fork `the repository`_ on Github to start making your changes to the
    **master** branch for next major version, or **stable** branch for next
    minor version.
@@ -68,25 +71,25 @@ of the core developers before it is merged into the main repository.
    published. Make sure to add yourself to AUTHORS_ and the change to
    CHANGES_.
 
-.. _`the repository`: https://github.com/sphinx-doc/sphinx
-.. _AUTHORS: https://github.com/sphinx-doc/sphinx/blob/master/AUTHORS
-.. _CHANGES: https://github.com/sphinx-doc/sphinx/blob/master/CHANGES
+.. _`the repository`: https://github.com/{{ github_page }}/
+.. _AUTHORS: https://github.com/{{ github_page }}/blob/master/AUTHORS
+.. _CHANGES: https://github.com/{{ github_page }}/blob/master/CHANGES
 
 
 Getting Started
 ~~~~~~~~~~~~~~~
 
-These are the basic steps needed to start developing on Sphinx.
+These are the basic steps needed to start developing on {{project}}.
 
 #. Create an account on Github.
 
-#. Fork the main Sphinx repository (`sphinx-doc/sphinx
-   <https://github.com/sphinx-doc/sphinx>`_) using the Github interface.
+#. Fork the main repository (`{{ github_page }}
+   <https://github.com/{{ github_page }}/>`_) using the Github interface.
 
 #. Clone the forked repository to your machine. ::
 
-       git clone https://github.com/USERNAME/sphinx
-       cd sphinx
+       git clone https://github.com/USERNAME/{{ github_name }}
+       cd {{ github_name }}
 
 #. Checkout the appropriate branch.
 
@@ -100,8 +103,8 @@ These are the basic steps needed to start developing on Sphinx.
 
 #. Optional: setup a virtual environment. ::
 
-       virtualenv ~/sphinxenv
-       . ~/sphinxenv/bin/activate
+       virtualenv ~/{{ pyname }}env
+       . ~/{{ pyname }}env/bin/activate
        pip install -e .
 
 #. Create a new working branch.  Choose any name you like. ::
@@ -116,13 +119,12 @@ These are the basic steps needed to start developing on Sphinx.
 
    * Run the unit tests::
 
-       pip install nose mock
-       make test
+       pip install pytest mock
+       inv test.run
 
    * Build the documentation and check the output for different builders::
 
-       cd doc
-       make clean html latexpdf
+       inv doc.build
 
    * Run the unit tests under different Python environments using
      :program:`tox`::
@@ -134,11 +136,6 @@ These are the basic steps needed to start developing on Sphinx.
 
    * For bug fixes, first add a test that fails without your changes and passes
      after they are applied.
-
-   * Tests that need a sphinx-build run should be integrated in one of the
-     existing test modules if possible.  New tests that to ``@with_app`` and
-     then ``build_all`` for a few assertions are not good since *the test suite
-     should not take more than a minute to run*.
 
 #. Please add a bullet point to :file:`CHANGES` if the fix or feature is not
    trivial (small doc updates, typo fixes).  Then commit::
@@ -158,21 +155,18 @@ These are the basic steps needed to start developing on Sphinx.
 
        git push origin feature-xyz
 
-#. Submit a pull request from your branch to the respective branch (``master``
-   or ``stable``) on ``sphinx-doc/sphinx`` using the Github interface.
-
 #. Wait for a core developer to review your changes.
 
 
 Core Developers
 ~~~~~~~~~~~~~~~
 
-The core developers of Sphinx have write access to the main repository.  They
+The core developers of {{ project }} have write access to the main repository.  They
 can commit changes, accept/reject pull requests, and manage items on the issue
 tracker.
 
 You do not need to be a core developer or have write access to be involved in
-the development of Sphinx.  You can submit patches or create pull requests
+the development of {{ project }}.  You can submit patches or create pull requests
 from forked repositories and have a core developer add the changes for you.
 
 The following are some general guidelines for core developers:
@@ -186,39 +180,6 @@ The following are some general guidelines for core developers:
 
 * When committing code written by someone else, please attribute the original
   author in the commit message and any relevant :file:`CHANGES` entry.
-
-
-Locale updates
-~~~~~~~~~~~~~~
-
-The parts of messages in Sphinx that go into builds are translated into several
-locales.  The translations are kept as gettext ``.po`` files translated from the
-master template ``sphinx/locale/sphinx.pot``.
-
-Sphinx uses `Babel <http://babel.edgewall.org>`_ to extract messages and
-maintain the catalog files.  It is integrated in ``setup.py``:
-
-* Use ``python setup.py extract_messages`` to update the ``.pot`` template.
-* Use ``python setup.py update_catalog`` to update all existing language
-  catalogs in ``sphinx/locale/*/LC_MESSAGES`` with the current messages in the
-  template file.
-* Use ``python setup.py compile_catalog`` to compile the ``.po`` files to binary
-  ``.mo`` files and ``.js`` files.
-
-When an updated ``.po`` file is submitted, run compile_catalog to commit both
-the source and the compiled catalogs.
-
-When a new locale is submitted, add a new directory with the ISO 639-1 language
-identifier and put ``sphinx.po`` in there.  Don't forget to update the possible
-values for :confval:`language` in ``doc/config.rst``.
-
-The Sphinx core messages can also be translated on `Transifex
-<https://www.transifex.com/>`_.  There exists a client tool named ``tx`` in the
-Python package "transifex_client", which can be used to pull translations in
-``.po`` format from Transifex.  To do this, go to ``sphinx/locale`` and then run
-``tx pull -f -l LANG`` where LANG is an existing language identifier.  It is
-good practice to run ``python setup.py update_catalog`` afterwards to make sure
-the ``.po`` file has the canonical Babel formatting.
 
 
 Coding Guide
@@ -235,12 +196,6 @@ Coding Guide
 * New features should be documented.  Include examples and use cases where
   appropriate.  If possible, include a sample that is displayed in the
   generated output.
-
-* When adding a new configuration variable, be sure to document it and update
-  :file:`sphinx/quickstart.py` if it's important enough.
-
-* Use the included :program:`utils/check_sources.py` script to check for
-  common formatting issues (trailing whitespace, lengthy lines, etc).
 
 * Add appropriate unit tests.
 
@@ -260,7 +215,7 @@ Debugging Tips
 * Set the configuration variable :confval:`keep_warnings` to ``True`` so
   warnings will be displayed in the generated output.
 
-* Set the configuration variable :confval:`nitpicky` to ``True`` so that Sphinx
+* Set the configuration variable :confval:`nitpicky` to ``True`` so that {{ project }}
   will complain about references without a known target.
 
 * Set the debugging options in the `Docutils configuration file

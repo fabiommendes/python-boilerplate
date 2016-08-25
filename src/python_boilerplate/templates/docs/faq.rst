@@ -9,9 +9,9 @@ Why is this file empty?
 -----------------------
 
 Because it was created automatically by python-boilerplate__ and the package
-author is too busy coding and did not provided a proper FAQ section ;-)
+author is too busy coding and did not provide a proper FAQ section ;-)
 
-..: http://github.com/fabiommendes/boilerplate/
+..: http://github.com/fabiommendes/python-boilerplate/
 
 Concepts
 ========

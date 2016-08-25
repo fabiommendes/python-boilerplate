@@ -1,4 +1,5 @@
 Starting a new Python project from the scratch is boring and error prone:
+
     * Create a setup.py script
     * Configure documentation
     * Provide installation instructions
@@ -28,11 +29,13 @@ command on the root directory of your project. It creates the following tree::
     |- README.rst
     |- VERSION
     |- requirements.txt
-    |- requirements-dev.txt
     |- setup.py
     |- docs/
-    |   |- conf.py
     |   |- index.rst
+    |   |- apidoc.rst
+    |   |- changelog.rst
+    |   |  ...
+    |   |- conf.py
     |   |- make.bat
     |   |- Makefile
     |   |- _static/*
@@ -44,6 +47,7 @@ command on the root directory of your project. It creates the following tree::
             |- <project>.py
             \- tests/
                 |- __init__.py
+                |- __meta__.py
                 \- test_<project>.py
 
 
