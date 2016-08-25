@@ -1,2 +1,2 @@
 from .parser import parser, subparsers, register
-from .init import InitProjectWriter, InitProjectConfig
+from .init import InitProjectWriter, InitProject

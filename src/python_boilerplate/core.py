@@ -1,13 +1,18 @@
-import os
-import datetime
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
 
-from python_boilerplate.inputs import default_input, yn_input, ny_input
+import datetime
+import os
+
 from python_boilerplate.config import get_config, get_context, save_config, \
     register_file
+from python_boilerplate.inputs import default_input, yn_input, ny_input
 from python_boilerplate.jinja import write_template
+from python_boilerplate.compat import input
 
 
-class ConfigManager:
+class ConfigManager(object):
     """
     Manage configurations for a FileWriter object.
 

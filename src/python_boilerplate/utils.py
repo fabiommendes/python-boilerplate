@@ -2,7 +2,7 @@ import os
 import string
 from contextlib import contextmanager
 
-import unidecode
+from .compat import unidecode
 
 
 def pyname(name):
@@ -10,7 +10,7 @@ def pyname(name):
     Converts a string of text into a valid python name.
     """
 
-    name = unidecode.unidecode(name.strip().lower())
+    name = unidecode(name.strip().lower())
     valid = string.ascii_letters + string.digits + '_'
     char_list = []
     for i, char in enumerate(name):

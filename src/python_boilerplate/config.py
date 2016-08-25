@@ -1,7 +1,13 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
 import codecs
-import configparser
 import hashlib
 import os
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 GLOBAL_CONFIG = None
 
 
@@ -11,36 +17,41 @@ class BoilerplateConfig(configparser.ConfigParser):
     """
 
     valid_options = [
-        'project', 'author', 'email', 'version', 'license', 'pyname'
+        'project', 'author', 'email', 'version', 'license', 'pyname',
+        'has_script',
     ]
 
     def __init__(self, *args, **kwds):
-        super().__init__(*args, **kwds)
+        configparser.ConfigParser.__init__(self, *args, **kwds)
         self.optionxform = str
 
         if os.path.exists('boilerplate.ini'):
-            with open('boilerplate.ini') as F:
-                self.read_file(F)
+            self.read('boilerplate.ini')
 
         # Create sessions
-        if 'options' not in self:
+        if not self.has_section('options'):
             self.add_section('options')
-            for attr in self.valid_options:
+        for attr in self.valid_options:
+            if not self.has_option('options', attr):
                 self.set('options', attr, '')
 
-        if 'file hashes' not in self:
+        if  not self.has_section('file hashes'):
             self.add_section('file hashes')
 
     def register_file(self, filename, data):
-        """Compute and register the hash value for some file given its textual
-        data."""
+        """
+        Compute and register the hash value for some file given its textual
+        data.
+        """
 
         file_hash = hashlib.md5(data.encode('utf8')).digest()
         file_hash = codecs.encode(file_hash, 'base64').decode()
         self.set('file hashes', filename, file_hash)
 
     def save(self):
-        """Saves content to boilerplate.ini."""
+        """
+        Saves content to boilerplate.ini.
+        """
 
         with open('boilerplate.ini', 'w') as F:
             self.write(F)

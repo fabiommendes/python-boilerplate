@@ -7,7 +7,7 @@ import pytest
 
 from python_boilerplate import config as config_mod
 from python_boilerplate.config import get_config, get_context
-from python_boilerplate.commands import InitProjectConfig, InitProjectWriter
+from python_boilerplate.commands import InitProject, InitProjectWriter
 from python_boilerplate.__main__ import main
 from python_boilerplate.utils import visit_dir
 
@@ -27,7 +27,8 @@ def tempdir():
 
 @pytest.yield_fixture(scope='session')
 def jobdir():
-    yield from tempdir()
+    for x in tempdir():
+        yield x
 
 
 @pytest.yield_fixture
@@ -43,7 +44,7 @@ def context(config):
 
 @pytest.fixture
 def init_config(config, project_options):
-    return InitProjectConfig(**project_options)
+    return InitProject(**project_options)
 
 
 @pytest.fixture
@@ -55,6 +56,7 @@ def project_options():
         ('email', 'foo@bar.com'),
         ('version', '0.1.0'),
         ('license', 'gpl'),
+        ('has_script', 'yes'),
     ])
 
 
@@ -66,7 +68,6 @@ def job(jobdir):
 
     with mock.patch('builtins.input', side_effect=inputs):
         main(['init', 'test-project'])
-
 
 
 #
@@ -95,9 +96,10 @@ def test_init_command_context(config):
         '',              # version
         '',              # license
         '',              # editor
+        '',              # has_script
     ]
     with mock.patch('builtins.input', side_effect=inputs):
-        cfg = InitProjectConfig()
+        cfg = InitProject()
         cfg.run()
         ctx = get_context()
 
@@ -109,6 +111,7 @@ def test_init_command_context(config):
         'pyname_dashed': 'test-project',
         'version': '0.1.0',
         'license': 'gpl',
+        'has_script': 'yes'
     }
 
 

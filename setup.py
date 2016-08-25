@@ -3,7 +3,7 @@
 # This file were created by Python Boilerplate. Use Python Boilerplate to start
 # simple, usable and best-practices compliant Python projects.
 #
-# Learn more about it at: http://github.com/fabiommendes/boilerplate/
+# Learn more about it at: http://github.com/fabiommendes/python-boilerplate/
 #
 
 import os
@@ -29,11 +29,9 @@ setup(
     version=version,
     author=author,
     author_email='fabiomacedomendes@gmail.com',
-    url='https://github.com/fabiommendes/boilerplate',
+    url='https://github.com/fabiommendes/python-boilerplate',
     description='Creates the skeleton of your Python project.',
     long_description=open('README.rst').read(),
-
-    # Classifiers (see http://...)
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -48,11 +46,12 @@ setup(
     packages=find_packages('src'),
     install_requires=[
         'jinja2',
-        'invoke',
-        'unidecode'
+        'invoke>=0.13',
+        'unidecode',
+        'six',
     ],
     extras_require={
-        'testing': [
+        'dev': [
             'pytest',
             'mock',
         ],
@@ -76,5 +75,4 @@ setup(
     # Other configurations
     zip_safe=False,
     platforms='any',
-    test_suite='%s.test.test_%s' % (name, name),
 )

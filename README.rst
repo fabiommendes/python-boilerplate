@@ -17,8 +17,8 @@ although we do not follow these recommendations by the letter.
 The filesystem structure
 ========================
 
-The ``python-boilerplate init [<project>]`` command will create the following
-tree under the current directory::
+We start a python-boilerplate skeleton by calling the ``python-boilerplate init``
+command on the root directory of your project. It creates the following tree::
 
     .
     |- .gitignore
@@ -42,7 +42,7 @@ tree under the current directory::
             |- __init__.py
             |- __meta__.py
             |- <project>.py
-            \- test/
+            \- tests/
                 |- __init__.py
                 \- test_<project>.py
 
@@ -50,18 +50,45 @@ tree under the current directory::
 setup.py
 --------
 
-...
+The main entry point for installation and management of your project. We provide
+a minimum working script based on setuptools. In order to avoid duplication of
+work, the setup.py script reuses the project description from the README.rst
+file and versioning is controlled by a separate VERSION file. Users still have
+to edit this file and provide the short description of the project.
+
+Don't forget to ``python setup.py register`` your project to PyPI before it is
+too late!
 
 
 src/*
 -----
 
-...
+python-boilerplate separates the source code for your project under the ``src/``
+folder. This contrasts with another typical approach of leaving the python
+packages directly in the root of the the source tree. We believe that this
+approach creates projects that are more organized and manageable in the long
+run.
+
+We also create a "<package>.tests" module for the unit tests and distribute it
+with the main package. The drawback of this approach is a slightly larger
+distribution. In most systems, this small price is greatly offset by the ability
+to ask users to easily run tests in bug reports. python-boilerplate creates a
+``__main__.py`` file in the tests package so users can run the test suite simply
+by  calling ``python -m <package>.tests``.
 
 docs/*
 ------
 
-...
+python-boilerplate creates the skeleton for a Sphinx_-based documentation. The
+documentation reuses both the README.rst and INSTALL.rst files. In most cases,
+it is probably a good idea to create a relatively small README.rst file with a
+small overview of your project and leave most details of the documentation to
+specific files inside the ``docs/`` directory.
+
+The README.rst file in python-boilerplate itself is perhaps too big ;-)
+
+_ Sphinx: https://sphinx-doc.org
+
 
 README.rst and INSTALL.rst
 --------------------------
@@ -81,7 +108,7 @@ VERSION
 
 Your project's version is conveniently centralized in a single file. The
 setup.py script uses this value to register you package and it also saves
-the correct version in the package.__version__ attribute in your module.
+the correct version in the <package>.__version__ attribute in your module.
 
 You may bump versions using an invoke task::
 
@@ -107,16 +134,18 @@ environments such as a Django project running in it own virtualenv or docker con
 MANIFEST.in
 -----------
 
-...
+Defines files to be included in the source distributions created by setuptools.
 
 LICENSE
 -------
 
-...
+Python boilerplate accepts the most common open source licenses (or at least it
+should). If the license you want to use is not supported, we gladly accept
+patches!
 
 .gitignore
 ----------
 
-...
+The default .gitignore excludes python bytecode and all build directories.
 
 

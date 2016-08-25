@@ -1,5 +1,16 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import six
+
+from .compat import input, unicode
+
+
 def yn_input(text, yes='yes', no='no', default='yes'):
-    """Asks a yes/no question and return the answer."""
+    """
+    Asks a yes/no question and return the answer.
+    """
 
     suffix = ' [%s/%s] ' % (yes[0].upper(), no[0])
     while True:
@@ -16,13 +27,17 @@ def yn_input(text, yes='yes', no='no', default='yes'):
 
 
 def ny_input(text, yes='yes', no='no'):
-    """Like yn_input, but the default choice is 'no'."""
+    """
+    Like yn_input, but the default choice is 'no'.
+    """
 
     return yn_input(text, yes, no, default=no)
 
 
 def default_input(text, default):
-    """Asks for some input with a default string value."""
+    """
+    Asks for some input with a default string value.
+    """
 
-    default = str(default)
+    default = unicode(default)
     return input('%s [%s] ' % (text, default)) or default

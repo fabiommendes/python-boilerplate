@@ -4,12 +4,12 @@ Developer's guide
 
 .. topic:: Abstract
 
-   This document describes the development process of Sphinx.
-   {{short_description}}
+   This document describes the development process of {{ project }}.
+   {{ short_description }}
 
-The {{project}} source code is managed using Git and is hosted on Github.
+The {{ project }} source code is managed using Git and is hosted on Github.
 
-    git clone git://github.com/{{github_page}}
+    git clone git://github.com/{{ github_user }}/{{ github_name }}
 
 .. rubric:: Community
 
@@ -42,10 +42,15 @@ and post that instead.
 .. _`issue tracker`: https://github.com/{{github_page}}/issues
 
 
+Non coding contributions
+------------------------
+
+If
+
 Contributing to Sphinx
 ----------------------
 
-The recommended way for new contributors to submit code to Sphinx is to fork
+The recommended way for new contributors to submit code is to fork
 the repository on Github and then submit a pull request after
 committing the changes.  The pull request will then need to be approved by one
 of the core developers before it is merged into the main repository.

@@ -4,7 +4,7 @@
 # This file were created by Python Boilerplate. Use boilerplate to start simple
 # usable and best-practices compliant Python projects.
 #
-# Learn more about it at: http://github.com/fabiommendes/boilerplate/
+# Learn more about it at: http://github.com/fabiommendes/python-boilerplate/
 #
 {% endif %}
 import os
@@ -52,18 +52,22 @@ setup(
     packages=find_packages('src'),
     install_requires=[{{ requirements }}],
     extras_require={
-        'testing': ['pytest'],
+        'dev': [
+            'boilerplate',
+            'mock',
+            'invoke',
+            'pytest',
+        ],
     },
     {%- if has_script|default(True) %}
 
     # Scripts
     entry_points={
-        'console_scripts': ['{{ dashed_pyname }} = {{ pyname }}.__main__:main'],
+        'console_scripts': ['{{ pyname|replace('_', '-') }} = {{ pyname }}.__main__:main'],
     },
     {%- endif %}
 
     # Other configurations
     zip_safe=False,
     platforms='any',
-    test_suite='%s.test.test_%s' % (name, name),
 )

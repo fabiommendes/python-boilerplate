@@ -1,24 +1,30 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 import subprocess
 
-from python_boilerplate.config import refresh_config, save_config
+from python_boilerplate.commands import subparsers, register
+from python_boilerplate.config import refresh_config
 from python_boilerplate.core import ConfigManager, FileWriter
 from python_boilerplate.utils import pyname, visit_dir
-from python_boilerplate.commands import subparsers, register
+from python_boilerplate.compat import input
+
 license_alias = {
     'gpl': 'gpl3',
 }
 
 
 # Define Config/FileWriter classes
-class InitProjectConfig(ConfigManager):
+class InitProject(ConfigManager):
     """
     Config options for the `python-boilerplate init` command
     """
 
     def __init__(self, **kwargs):
         self._has_ini_file = not os.path.exists('boilerplate.ini')
-        super().__init__('options', **kwargs)
+        ConfigManager.__init__(self, 'options', **kwargs)
 
     def run(self):
         require = self.require
@@ -37,6 +43,9 @@ class InitProjectConfig(ConfigManager):
 
         # License
         require('license', 'License: ', default='gpl')
+
+        # Scripts
+        require('has_script', 'Has scripts? ', default='False', action='yn')
 
         # Save config file
         self.save()
@@ -58,6 +67,11 @@ class InitProjectWriter(FileWriter):
     """
 
     has_scripts = True
+
+    def get_context(self, **kwargs):
+        if isinstance(self.has_scripts, str):
+            self.has_scripts = self.has_scripts.lower() == 'yes'
+        return FileWriter.get_context(self, has_scripts=self.has_scripts, **kwargs)
 
     def run(self, ignore=None):
         if ignore is False:
@@ -83,7 +97,6 @@ class InitProjectWriter(FileWriter):
         self.write('setup.pyt', 'setup.py', ignore=ignore)
         self.write('MANIFEST.in', ignore=ignore)
         self.write('requirements.txt', ignore=ignore)
-        self.write('requirements-dev.txt', ignore=ignore)
 
         # Package structure
         basedir = 'src/%s' % self.pyname
@@ -116,11 +129,13 @@ class InitProjectWriter(FileWriter):
                 if not os.path.exists(folder):
                     os.mkdir(folder)
 
+
 # Setup the "init" subparser
 cmd = subparsers.add_parser('init', help='create a new project')
-cmd.add_argument('project', nargs='?', help='Your Python Boilerplate project\' name')
+cmd.add_argument('project', nargs='?',
+                 help='Your Python Boilerplate project\' name')
 cmd.add_argument('--author', '-a', help='author\'s name')
 cmd.add_argument('--email', '-e', help='author\'s e-mail')
 cmd.add_argument('--license', '-l', help='project\'s license')
 cmd.add_argument('--version', '-v', help='project\'s version')
-register(cmd, InitProjectConfig, InitProjectWriter)
+register(cmd, InitProject, InitProjectWriter)

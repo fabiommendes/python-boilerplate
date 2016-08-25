@@ -1,5 +1,0 @@
--e .
-pytest
-boilerplate
-mock
-invoke
