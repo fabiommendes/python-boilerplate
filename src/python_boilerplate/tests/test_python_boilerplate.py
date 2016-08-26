@@ -87,7 +87,7 @@ def test_modified_context(config):
     assert ctx['pyname'] == 'foo_bar'
 
 
-def test_init_command_context(config):
+def _test_init_command_context(config):
     inputs = [
         'test-project',  # project name
         'some author',   # author

@@ -1,5 +1,4 @@
 Starting a new Python project from the scratch is boring and error prone:
-
     * Create a setup.py script
     * Configure documentation
     * Provide installation instructions

@@ -5,7 +5,7 @@ from invoke import run, task
 
 
 @task
-def build(no_docs=False):
+def build(ctx, no_docs=False):
     """
     Build python package and docs.
     """
@@ -16,7 +16,7 @@ def build(no_docs=False):
 
 
 @task
-def bump_version(major=False, minor=False, micro=False):
+def bump_version(ctx, major=False, minor=False, micro=False):
     """
     Bump the version number in the VERSION file.
     """
@@ -80,19 +80,19 @@ def bump_version(major=False, minor=False, micro=False):
 # Incomplete tasks
 #
 @task
-def tests():
+def tests(ctx):
     """Run the pytest test suit"""
     print('not ready...')
 
 
 @task
-def coverage():
+def coverage(ctx):
     """Run test code coverage"""
     print('not ready...')
 
 
 @task
-def lint():
+def lint(ctx):
     """
     Run the linter
     """
@@ -100,31 +100,34 @@ def lint():
 
 
 @task
-def diagnose():
+def diagnose(ctx):
     print('not ready...')
 
 
 @task
-def publish():
+def publish(ctx):
     print('not ready...')
 
 
 @task
-def release():
-    print('not ready...')
-
-@task
-def release_check():
+def release(ctx):
     print('not ready...')
 
 
 @task
-def clean(no_docs=False, no_ext=False):
-    """Clean all build files: docs, C extensions, bytecode, etc"""
+def release_check(ctx):
+    print('not ready...')
+
+
+@task
+def clean(ctx, no_docs=False, no_ext=False):
+    """
+    Clean all build files: docs, C extensions, bytecode, etc.
+    """
 
     print('not ready...')
 
 
 @task
-def http_serve():
+def http_serve(ctx):
     print('not ready...')
