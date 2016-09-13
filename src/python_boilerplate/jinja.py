@@ -23,6 +23,10 @@ def write_template(template, namespace=None, ignore=False, path=None,
     if path is None:
         path = template
 
+    # We expect POSIX paths, but here we have to translate to the format used
+    # in the filesystem
+    path = os.path.join(*path.split('/'))
+
     template = jinja_env.get_template(template)
     data = template.render(**(namespace or {}))
 

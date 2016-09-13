@@ -53,7 +53,7 @@ master_doc = 'index'
 # General information about the project.
 project = '{{ pyname }}'
 project_title = project.title()
-author = '{{ author }}'
+author = {{ author|unicode_escape|repr }}
 copyright = '2016, %s' % author
 
 

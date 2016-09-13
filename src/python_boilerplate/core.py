@@ -81,7 +81,7 @@ class JobConfig(object):
         return {}
 
 
-class JobWriter:
+class JobWriter(object):
     """
     A task that writes files in the disk.
 
