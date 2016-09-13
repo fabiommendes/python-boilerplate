@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import six
 
-from .compat import input, unicode
+from .compat import unicode
 
 
 def yn_input(text, yes='yes', no='no', default='yes'):
@@ -14,7 +14,7 @@ def yn_input(text, yes='yes', no='no', default='yes'):
 
     suffix = ' [%s/%s] ' % (yes[0].upper(), no[0])
     while True:
-        ans = input(text + suffix).lower()
+        ans = grab_input(text + suffix).lower()
         if ans in (yes, no):
             return ans
         elif not ans:
@@ -40,4 +40,29 @@ def default_input(text, default):
     """
 
     default = unicode(default)
-    return input('%s [%s] ' % (text, default)) or default
+    return grab_input('%s [%s] ' % (text, default)) or default
+
+
+def grab_input(msg=''):
+    """
+    Asks for user input.
+
+    Like the builtin input() function, but has the same behavior in python 2
+    and 3.
+    """
+
+    if six.PY2:
+        # noinspection PyUnresolvedReferences
+        return raw_input(msg)
+    else:
+        return input(msg)
+
+
+def show(*args, **kwargs):
+    """
+    Alias to print() function.
+
+    Can be useful in conjunction with mock() in test cases.
+    """
+
+    return print(*args, **kwargs)

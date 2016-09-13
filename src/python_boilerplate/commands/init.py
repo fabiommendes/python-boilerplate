@@ -5,11 +5,11 @@ from __future__ import unicode_literals
 import os
 import subprocess
 
+from python_boilerplate import io
 from python_boilerplate.commands import subparsers, register
 from python_boilerplate.config import refresh_config
-from python_boilerplate.core import ConfigManager, FileWriter
+from python_boilerplate.core import JobConfig, JobWriter
 from python_boilerplate.utils import pyname, visit_dir
-from python_boilerplate.compat import input
 
 license_alias = {
     'gpl': 'gpl3',
@@ -17,16 +17,16 @@ license_alias = {
 
 
 # Define Config/FileWriter classes
-class InitProject(ConfigManager):
+class InitJobConfig(JobConfig):
     """
     Config options for the `python-boilerplate init` command
     """
 
     def __init__(self, **kwargs):
         self._has_ini_file = not os.path.exists('boilerplate.ini')
-        ConfigManager.__init__(self, 'options', **kwargs)
+        JobConfig.__init__(self, 'options', **kwargs)
 
-    def run(self):
+    def ask_options(self):
         require = self.require
 
         # Asks basic info
@@ -50,28 +50,33 @@ class InitProject(ConfigManager):
         # Save config file
         self.save()
         if self._has_ini_file:
-            editor = input(
+            io.show(
                 '\nYour config file was saved as boilerplate.ini. Leave blank '
-                'to continue or specify a text editor.\n'
-                'Editor: '
-            ).strip()
+                'to continue or specify a text editor.'
+            )
+            editor = io.grab_input('Editor: ').strip()
 
             if editor:
                 subprocess.call([editor, 'boilerplate.ini'])
                 refresh_config()
 
 
-class InitProjectWriter(FileWriter):
+class InitJobWriter(JobWriter):
     """
     File writer for the `python-boilerplate init` command
     """
 
     has_scripts = True
 
+    def __init__(self, config):
+        super().__init__(config, {
+            'requirements': '',
+        })
+
     def get_context(self, **kwargs):
         if isinstance(self.has_scripts, str):
             self.has_scripts = self.has_scripts.lower() == 'yes'
-        return FileWriter.get_context(self, has_scripts=self.has_scripts, **kwargs)
+        return JobWriter.get_context(self, has_scripts=self.has_scripts, **kwargs)
 
     def run(self, ignore=None):
         if ignore is False:
@@ -102,8 +107,6 @@ class InitProjectWriter(FileWriter):
         basedir = 'src/%s' % self.pyname
         self.write('package/init.pyt',
                    '%s/__init__.py' % basedir, ignore=True)
-        self.write('package/meta.pyt',
-                   '%s/__meta__.py' % basedir, ignore=ignore)
         if self.has_scripts:
             self.write('package/main.pyt',
                        '%s/__main__.py' % basedir, ignore=ignore)
@@ -138,4 +141,4 @@ cmd.add_argument('--author', '-a', help='author\'s name')
 cmd.add_argument('--email', '-e', help='author\'s e-mail')
 cmd.add_argument('--license', '-l', help='project\'s license')
 cmd.add_argument('--version', '-v', help='project\'s version')
-register(cmd, InitProject, InitProjectWriter)
+register(cmd, InitJobConfig, InitJobWriter)

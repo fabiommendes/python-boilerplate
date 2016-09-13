@@ -7,12 +7,11 @@ import os
 
 from python_boilerplate.config import get_config, get_context, save_config, \
     register_file
-from python_boilerplate.inputs import default_input, yn_input, ny_input
+from python_boilerplate import io
 from python_boilerplate.jinja import write_template
-from python_boilerplate.compat import input
 
 
-class ConfigManager(object):
+class JobConfig(object):
     """
     Manage configurations for a FileWriter object.
 
@@ -39,7 +38,7 @@ class ConfigManager(object):
         else:
             get_config().set(self.config_section, attr, value)
 
-    def run(self):
+    def ask_options(self):
         """
         Subclass must override this method to ask for user input.
         """
@@ -53,13 +52,13 @@ class ConfigManager(object):
         value = get_config().get(section, name)
         if not value:
             if action is None and default is None:
-                value = input(text)
+                value = io.grab_input(text)
             elif action is None:
-                value = default_input(text, default)
+                value = io.default_input(text, default)
             elif action == 'yn':
-                value = yn_input(text)
+                value = io.yn_input(text)
             elif action == 'ny':
-                value = ny_input(text)
+                value = io.ny_input(text)
             else:
                 raise ValueError('invalid action: %r' % action)
 
@@ -82,7 +81,7 @@ class ConfigManager(object):
         return {}
 
 
-class FileWriter:
+class JobWriter:
     """
     A task that writes files in the disk.
 

@@ -19,8 +19,11 @@ dirname = os.path.dirname(__file__)
 
 
 # Save version and author to __meta__.py
-with open(os.path.join(dirname, 'src', pyname, '__meta__.py'), 'w') as F:
-    F.write('__version__ = %r\n__author__ = %r\n' % (version, author))
+with open(os.path.join(dirname, 'src', 'python_boilerplate', '__meta__.py'), 'wb') as F:
+    F.write(b'''# Automatically created. Please do not edit.
+__version__ = u'%s'
+__author__ = u'F\\xe1bio Mac\\xeado Mendes'
+''' % version.encode())
 
 
 setup(

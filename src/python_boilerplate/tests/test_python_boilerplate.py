@@ -6,16 +6,15 @@ import mock
 import pytest
 
 from python_boilerplate import config as config_mod
+from python_boilerplate.commands import InitJobConfig, InitJobWriter
 from python_boilerplate.config import get_config, get_context
-from python_boilerplate.commands import InitProject, InitProjectWriter
-from python_boilerplate.__main__ import main
-from python_boilerplate.utils import visit_dir
 
 
 @pytest.yield_fixture
 def tempdir():
     tempdir = tempfile.TemporaryDirectory()
     oldpath = os.getcwd()
+
     with tempdir as path:
         os.chdir(path)
         try:
@@ -25,16 +24,11 @@ def tempdir():
         tempdir.cleanup()
 
 
-@pytest.yield_fixture(scope='session')
-def jobdir():
-    for x in tempdir():
-        yield x
-
-
 @pytest.yield_fixture
 def config(tempdir):
     yield get_config()
     config_mod.GLOBAL_CONFIG = None
+    config_mod.CONFIG_DIR = None
 
 
 @pytest.fixture
@@ -43,8 +37,13 @@ def context(config):
 
 
 @pytest.fixture
-def init_config(config, project_options):
-    return InitProject(**project_options)
+def project_config(config, project_options):
+    return InitJobConfig(**project_options)
+
+
+@pytest.fixture
+def project_writer(project_config):
+    return InitJobWriter(project_config)
 
 
 @pytest.fixture
@@ -60,25 +59,29 @@ def project_options():
     ])
 
 
-@pytest.fixture(scope='session')
-def job(jobdir):
-    inputs = list(project_options().values())
-    inputs.append('')  # skip editor
-    del inputs[0]
+def mock_inputs(inputs):
+    """
+    Mock user input by using the values in the given list.
+    """
 
-    with mock.patch('builtins.input', side_effect=inputs):
-        main(['init', 'test-project'])
+    func_path = 'python_boilerplate.io.grab_input'
+    return mock.patch(func_path, site_effect=inputs)
 
 
-#
 # Context
-#
-def test_default_config_context(context, project_options):
-    ctx = {k: '' for k in project_options}
-    ctx['pyname_dashed'] = ''
+def test_default_config_context(context):
+    context = {k: v for k, v in context.items() if v != ''}
+
+    assert context == {
+        'version': '0.1.0',
+        'boilerplate_version': 1,
+        'has_script': False,
+        'license': 'mit',
+        'python_version': 'both'
+    }
 
 
-def test_modified_context(config):
+def test_context_is_modified_by_config(config):
     config.set('options', 'project', 'foo-bar')
     config.set('options', 'pyname', 'foo_bar')
     ctx = config_mod.get_context(ham='spam')
@@ -87,19 +90,20 @@ def test_modified_context(config):
     assert ctx['pyname'] == 'foo_bar'
 
 
+# Global job
 def _test_init_command_context(config):
     inputs = [
         'test-project',  # project name
-        'some author',   # author
-        'foo@bar.com',   # email
-        '',              # pyname
-        '',              # version
-        '',              # license
-        '',              # editor
-        '',              # has_script
+        'some author',  # author
+        'foo@bar.com',  # email
+        '',  # pyname
+        '',  # version
+        '',  # license
+        '',  # editor
+        '',  # has_script
     ]
-    with mock.patch('builtins.input', side_effect=inputs):
-        cfg = InitProject()
+    with mock_inputs(inputs):
+        cfg = InitJobConfig()
         cfg.run()
         ctx = get_context()
 
@@ -114,58 +118,21 @@ def _test_init_command_context(config):
         'has_script': 'yes'
     }
 
-
-#
 # File creation
+# def test_repeated_creation_of_project(job, jobdir):
+#     with visit_dir(jobdir):
+#         # Change file and revert
+#         data = open('setup.py').read()
+#         with open('setup.py', 'w') as F:
+#             F.write('corrupted')
 #
-def test_create_files(init_config):
-    writer = InitProjectWriter(init_config)
-    writer.run()
-
-
+#         # Revert file and create backup
+#         with mock_inputs(['']):
+#             main(['init'])
 #
-# Main function
+#         with open('setup.py') as F:
+#             assert F.read().strip() == data
 #
-def test_files_were_created(job, jobdir):
-    with visit_dir(jobdir):
-        default_files = {
-            'boilerplate.ini',
-            '.gitignore',
-            'docs',
-            'src',
-            'requirements-dev.txt',
-            'requirements.txt',
-            'setup.py',
-            'tasks.py',
-            'LICENSE',
-            'MANIFEST.in',
-            'INSTALL.rst',
-            'README.rst',
-            'VERSION',
-        }
-        assert set(os.listdir(os.getcwd())) == default_files
-
-
-def test_creted_file_contents(job, jobdir):
-    with visit_dir(jobdir):
-        with open('VERSION') as F:
-            assert F.read() == '0.1.0'
-
-
-def test_repeated_creation_of_project(job, jobdir):
-    with visit_dir(jobdir):
-        # Change file and revert
-        data = open('setup.py').read()
-        with open('setup.py', 'w') as F:
-            F.write('corrupted')
-
-        # Revert file and create backup
-        with mock.patch('builtins.input', return_value=''):
-            main(['init'])
-
-        with open('setup.py') as F:
-            assert F.read().strip() == data
-
-        # Check backup
-        assert os.path.exists('setup.py.bak')
-        os.unlink('setup.py.bak')
+#         # Check backup
+#         assert os.path.exists('setup.py.bak')
+#         os.unlink('setup.py.bak')

@@ -14,14 +14,13 @@ def get_parser():
     return parser
 
 def main(args=None):
-    """Main entry point for your project.
+    """
+    Main entry point for your project.
 
-    Parameters
-    ----------
-
-    args : list
-        A of arguments as if they were input in the command line. Leave it None
-        use sys.argv.
+    Args:
+        args : list
+            A of arguments as if they were input in the command line. Leave it None
+            use sys.argv.
     """
 
     parser = get_parser()

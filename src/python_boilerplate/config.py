@@ -8,7 +8,16 @@ try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
+
 GLOBAL_CONFIG = None
+CONFIG_DIR = None
+NOT_GIVEN = object()
+
+# Transformation in the context variables
+TRANSFORMATIONS = {
+    ('options', 'boilerplate_version'): int,
+    ('options', 'has_script'): lambda x: True if x.lower() == 'true' else False,
+}
 
 
 class BoilerplateConfig(configparser.ConfigParser):
@@ -16,10 +25,17 @@ class BoilerplateConfig(configparser.ConfigParser):
     A ConfigParser that exposes contents from boilerplate.ini.
     """
 
-    valid_options = [
-        'project', 'author', 'email', 'version', 'license', 'pyname',
-        'has_script',
-    ]
+    valid_options = {
+        'boilerplate_version': '1',
+        'project': '',
+        'author': '',
+        'email': '',
+        'version': '0.1.0',
+        'license': 'mit',
+        'pyname': '',
+        'has_script': 'false',
+        'python_version': 'both',
+    }
 
     def __init__(self, *args, **kwds):
         configparser.ConfigParser.__init__(self, *args, **kwds)
@@ -31,11 +47,11 @@ class BoilerplateConfig(configparser.ConfigParser):
         # Create sessions
         if not self.has_section('options'):
             self.add_section('options')
-        for attr in self.valid_options:
+        for attr, default in self.valid_options.items():
             if not self.has_option('options', attr):
-                self.set('options', attr, '')
+                self.set('options', attr, default)
 
-        if  not self.has_section('file hashes'):
+        if not self.has_section('file hashes'):
             self.add_section('file hashes')
 
     def register_file(self, filename, data):
@@ -62,11 +78,29 @@ def get_config():
     Returns an instance of BoilerplateConfig
     """
 
-    global GLOBAL_CONFIG
+    global GLOBAL_CONFIG, CONFIG_DIR
 
-    if GLOBAL_CONFIG is None:
+    if GLOBAL_CONFIG is None or CONFIG_DIR != os.getcwd():
         GLOBAL_CONFIG = BoilerplateConfig()
+        CONFIG_DIR = os.getcwd()
     return GLOBAL_CONFIG
+
+
+def get_option(section, option, default=NOT_GIVEN):
+    """
+    Return the chosen configuration option from .boilerplate.ini.
+
+    Section and option must be provided. If configuration is not present, it
+    returns the provided default value or raise a ValueError.
+    """
+
+    try:
+        return get_config().get(section, option)
+    except KeyError:
+        if default is NOT_GIVEN:
+            raise ValueError('invalid config option: %s/%s' % (section, option))
+        else:
+            return default
 
 
 def save_config():
@@ -94,8 +128,13 @@ def get_context(**kwargs):
     """
 
     cfg = get_config()
-    for option in BoilerplateConfig.valid_options:
-        kwargs.setdefault(option, cfg.get('options', option))
+    for option, default in BoilerplateConfig.valid_options.items():
+        value = cfg.get('options', option)
+        if value is None:
+            value = default
+        if ('options', option) in TRANSFORMATIONS:
+            value = TRANSFORMATIONS[('options', option)](value)
+        kwargs.setdefault(option, value)
 
     # Additional derived attributes
     pyname_dashed = cfg.get('options', 'pyname').replace('_', '-')

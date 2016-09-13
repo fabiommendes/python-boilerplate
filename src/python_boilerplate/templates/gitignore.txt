@@ -12,3 +12,6 @@ __pycache__/
 docs/_build/
 build/
 dist/
+
+# Python-boilerplate auto generated files
+src/{{ pyname }}/__meta__.py

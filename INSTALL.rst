@@ -1,17 +1,20 @@
-The easiest way to install Python-Boilerplate is using pip::
+=========================
+Installation instructions
+=========================
 
-    $ python -m pip install boilerplate
+python-boilerplate can be installed using pip::
 
-This will fetch the archive and its dependencies from the internet and install
-it for you. You may need to pick either ``python2``` or ``python3`` in
-order to adjust for the correct python version.
+    $ python -m pip install python-boilerplate
 
-If you download the tarball, unpack it, and execute::
+This command will fetch the archive and its dependencies from the internet and
+install them. 
 
-    $ python setup.py install
+If you've downloaded the tarball, unpack it, and execute::
 
-In either case, it is possible to perform local user installs by appending the
-``--user`` option.
+    $ python setup.py install --user
+
+You might prefer to install it as system-wide. In this case, skip the ``--user``
+option and execute as superuser by prepending the command with ``sudo``.
 
 
 Troubleshoot
@@ -24,4 +27,3 @@ Some Linux distributions (e.g. Ubuntu) install Python without installing pip.
 Please install it before. If you don't have root privileges, download the
 get-pip.py script at https://bootstrap.pypa.io/get-pip.py and execute it as
 ``python get-pip.py --user``.
-

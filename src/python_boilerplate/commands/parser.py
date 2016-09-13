@@ -28,7 +28,7 @@ def register(parser, config_class=None, writer_class=None):
         def handler(**kwargs):
             config = config_class(**kwargs)
             writer = writer_class(config)
-            config.run()
+            config.ask_options()
             writer.run()
             save_config()
 

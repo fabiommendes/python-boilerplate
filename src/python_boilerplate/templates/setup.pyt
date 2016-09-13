@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 {%- if boilerplate_header|default(True) %}
 #
 # This file were created by Python Boilerplate. Use boilerplate to start simple
@@ -10,25 +10,21 @@
 import os
 from setuptools import setup, find_packages
 
-
-# Meta information
-name = '{{ project }}'
-project = '{{ pyname }}'
-author = '{{ author }}'
+# Save version and author to __meta__.py
 version = open('VERSION').read().strip()
 dirname = os.path.dirname(__file__)
-
-
-# Save version and author to __meta__.py
-with open(os.path.join(dirname, 'src', project, '__meta__.py'), 'w') as F:
-    F.write('__version__ = %r\n__author__ = %r\n' % (version, author))
-
+path = os.path.join(dirname, 'src', {{ pyname|repr }}, '__meta__.py')
+with open(path, 'wb') as F:
+    F.write(b'''# Automatically created. Please do not edit.
+__version__ = u'%s'
+__author__ = u{{ author|unicode_escape|repr }}
+''' % version.encode())
 
 setup(
     # Basic info
-    name=name,
+    name={{ pyname|replace('_', '-')|repr }},
     version=version,
-    author=author,
+    author={{ author|repr }},
     author_email='{{ email }}',
     url='{{ url|default(github) }}',
     description='{{ short_description|default("A short description for your project.") }}',
@@ -39,23 +35,27 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         {%- for classifier in classifiers %}
-        '{{ classifier }}'
+        '{{ classifier }}',
         {%- endfor %}
         'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: POSIX',
+        'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Libraries',
     ],
 
-    # Packages and depencies
+    # Packages and dependencies
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    install_requires=[{{ requirements }}],
+    install_requires=[{{ requirements|indent(8) }}
+    ],
     extras_require={
         'dev': [
-            'boilerplate',
-            'mock',
-            'invoke',
+            'python-boilerplate',
+            'invoke>=0.13',
             'pytest',
         ],
     },
@@ -63,7 +63,7 @@ setup(
 
     # Scripts
     entry_points={
-        'console_scripts': ['{{ pyname|replace('_', '-') }} = {{ pyname }}.__main__:main'],
+        'console_scripts': ['{{ pip_name }} = {{ package_name }}.__main__:main'],
     },
     {%- endif %}
 

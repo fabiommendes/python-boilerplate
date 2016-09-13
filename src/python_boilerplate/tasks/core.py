@@ -15,7 +15,7 @@ def build(ctx, no_docs=False):
         run("python setup.py build_sphinx")
 
 
-@task
+@task(name='bump-version')
 def bump_version(ctx, major=False, minor=False, micro=False):
     """
     Bump the version number in the VERSION file.

@@ -1,16 +1,16 @@
-from __future__ import unicode_literals
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import codecs
 import hashlib
 import os
 
 import jinja2
+import six
 
-from python_boilerplate.inputs import yn_input
-
-basedir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(basedir))
+from python_boilerplate import io
+from python_boilerplate.io import yn_input
 
 
 def write_template(template, namespace=None, ignore=False, path=None,
@@ -52,9 +52,25 @@ def write_template(template, namespace=None, ignore=False, path=None,
                 return
 
     if verbose:
-        print('    creating %s...' % os.path.abspath(path))
+        io.show('    creating %s...' % os.path.abspath(path))
 
     with open(path, 'w') as F:
         F.write(data)
 
     return data
+
+
+# Jinja filters
+def unicode_escape(x):
+    r"""
+    Escape accents using \xXX unicode code points.
+    """
+
+    return six.u(x).encode('unicode-escape').decode()
+
+
+# Initialize jinja environment
+basedir = os.path.join(os.path.dirname(__file__), 'templates')
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(basedir))
+jinja_env.filters['repr'] = repr
+jinja_env.filters['unicode_escape'] = unicode_escape

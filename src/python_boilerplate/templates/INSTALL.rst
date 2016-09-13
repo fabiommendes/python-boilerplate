@@ -4,18 +4,24 @@ Installation instructions
 
 {{ project }} can be installed using pip::
 
-    $ python -m pip install {{ project }}
+    $ {% if PY2_ONLY -%}
+        python2
+      {%- elif PY3_ONLY -%}
+        python3
+      {%- else -%}
+        python
+      {%- endif %} -m pip install {{ project }}
 
 This command will fetch the archive and its dependencies from the internet and
-install them. You may need to pick either ``python2``` or ``python3`` in
-order to select the correct python version.
+install them. {% if PY_BOTH %}You may need to pick either ``python2``` or ``python3`` in
+order to select the correct python version.{% endif %}
 
 If you've downloaded the tarball, unpack it, and execute::
 
-    $ python setup.py install
+    $ python setup.py install --user
 
-In either case, it is possible to perform local user installs by appending the
-``--user`` option.
+You might prefer to install it as system-wide. In this case, skip the ``--user``
+option and execute as superuser by prepending the command with ``sudo``.
 
 
 Troubleshoot

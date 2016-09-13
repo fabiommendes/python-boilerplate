@@ -5,6 +5,7 @@ Roadmap
 Next release
 ============
 
+* Register project in free CI services (Travis, Coveralls, Quantified Code)
 * Complete the documentation.
 * Achieve 90% test code coverage.
 * :feature:`123` Feature description.
