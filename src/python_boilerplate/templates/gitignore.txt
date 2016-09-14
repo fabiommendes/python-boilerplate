@@ -15,3 +15,6 @@ dist/
 
 # Python-boilerplate auto generated files
 src/{{ pyname }}/__meta__.py
+
+# Testing and temporary files
+.tox/

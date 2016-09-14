@@ -4,7 +4,9 @@ from collections import OrderedDict
 
 import mock
 import pytest
+import six
 
+from python_boilerplate import compat
 from python_boilerplate import config as config_mod
 from python_boilerplate.commands import InitJobConfig, InitJobWriter
 from python_boilerplate.config import get_config, get_context
@@ -12,7 +14,10 @@ from python_boilerplate.config import get_config, get_context
 
 @pytest.yield_fixture
 def tempdir():
-    tempdir = tempfile.TemporaryDirectory()
+    if six.PY3:
+        tempdir = tempfile.TemporaryDirectory()
+    else:
+        tempdir = compat.TemporaryDirectory()
     oldpath = os.getcwd()
 
     with tempdir as path:

@@ -1,3 +1,10 @@
+.. image:: https://travis-ci.org/fabiommendes/python-boilerplate.svg?branch=master
+    :target: https://travis-ci.org/fabiommendes/python-boilerplate
+
+.. image:: https://coveralls.io/repos/github/fabiommendes/python-boilerplate/badge.svg?branch=master
+    :target: https://coveralls.io/github/fabiommendes/python-boilerplate?branch=master
+
+
 Starting a new Python project from the scratch is boring and error prone:
     * Create a setup.py script
     * Configure documentation
