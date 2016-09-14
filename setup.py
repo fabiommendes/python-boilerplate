@@ -7,8 +7,8 @@
 #
 
 import os
-from setuptools import setup, find_packages
 
+from setuptools import setup, find_packages
 
 # Meta information
 name = 'python-boilerplate'
@@ -17,14 +17,13 @@ author = 'Fábio Macêdo Mendes'
 version = open('VERSION').read().strip()
 dirname = os.path.dirname(__file__)
 
-
 # Save version and author to __meta__.py
-with open(os.path.join(dirname, 'src', 'python_boilerplate', '__meta__.py'), 'wb') as F:
-    F.write(b'''# Automatically created. Please do not edit.
+path = os.path.join(dirname, 'src', 'python_boilerplate', '__meta__.py')
+with open(path, 'wb') as F:
+    F.write(('''# Automatically created. Please do not edit.
 __version__ = u'%s'
 __author__ = u'F\\xe1bio Mac\\xeado Mendes'
-''' % version.encode())
-
+''' % version).encode())
 
 setup(
     # Basic info
@@ -72,7 +71,8 @@ setup(
 
     # Scripts
     entry_points={
-        'console_scripts': ['python-boilerplate = python_boilerplate.__main__:main'],
+        'console_scripts': [
+            'python-boilerplate = python_boilerplate.__main__:main'],
     },
 
     # Other configurations

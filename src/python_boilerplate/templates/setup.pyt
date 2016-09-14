@@ -15,10 +15,10 @@ version = open('VERSION').read().strip()
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, 'src', {{ pyname|repr }}, '__meta__.py')
 with open(path, 'wb') as F:
-    F.write(b'''# Automatically created. Please do not edit.
+    F.write(('''# Automatically created. Please do not edit.
 __version__ = u'%s'
 __author__ = u{{ author|unicode_escape|repr }}
-''' % version.encode())
+''' % version).decode())
 
 setup(
     # Basic info
