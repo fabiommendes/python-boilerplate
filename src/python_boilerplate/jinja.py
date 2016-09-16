@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import codecs
+import base64
 import hashlib
 import os
 
@@ -42,7 +42,7 @@ def write_template(template, namespace=None, ignore=False, path=None,
         ask = True
         if hash:
             file_hash = hashlib.md5(file_data.encode('utf8')).digest()
-            file_hash = codecs.encode(file_hash, 'base64').decode()
+            file_hash = base64.b64encode(file_hash).decode()
             if hash == file_hash:
                 os.rename(path, path + '.bak')
                 ask = False
