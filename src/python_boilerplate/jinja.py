@@ -58,7 +58,7 @@ def write_template(template, namespace=None, ignore=False, path=None,
     if verbose:
         io.show('    creating %s...' % os.path.abspath(path))
 
-    with open(path, 'w') as F:
+    with open(os.path.abspath(path), 'w') as F:
         F.write(data)
 
     return data
