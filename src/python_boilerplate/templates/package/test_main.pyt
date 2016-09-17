@@ -35,7 +35,7 @@ def main(args=None):
     # Get data from test_module
     import {{ package }}.tests as test_module
     test_path = os.path.abspath(os.path.dirname(test_module.__file__))
-    pytest.main([test_path])
+    pytest.main([test_path, '-m', 'not documentation'])
 
 
 if __name__ == '__main__':

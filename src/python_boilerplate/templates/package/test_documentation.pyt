@@ -1,8 +1,10 @@
+import os
+
+import pytest
 import manuel.ignore
 import manuel.codeblock
 import manuel.doctest
 import manuel.testing
-import os
 
 
 def make_manuel_suite(ns):
@@ -34,7 +36,10 @@ def make_manuel_suite(ns):
     suite = manuel.testing.TestSuite(m, *files)
     for i, test in enumerate(suite):
         name = 'test_doc_%s' % i
-        ns[name] = _wrapped(test.runTest, name)
+        ns[name] = pytest.mark.documentation(_wrapped(test.runTest, name))
     return suite
 
-make_manuel_suite(globals())
+try:
+    make_manuel_suite(globals())
+except OSError:
+    print('Documentation files not found: disabling tests!')
