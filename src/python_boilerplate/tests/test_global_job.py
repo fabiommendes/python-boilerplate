@@ -49,6 +49,7 @@ def test_global_job_has_correct_context(gproject):
         'email': 'foo@bar.com',
         'project': 'test-project',
         'pyname': 'test_project',
+        'package': 'test_project',
         'pyname_dashed': 'test-project',
         'version': '0.1.0',
         'boilerplate_version': 1,
@@ -59,21 +60,24 @@ def test_global_job_has_correct_context(gproject):
 
 
 def test_all_files_present_in_global_job(gproject, gtempdir):
+    default_files = sorted([
+        '.gitignore',
+        '.travis.yml',
+        '.coveragerc',
+        'boilerplate.ini',
+        'docs',
+        'requirements.txt',
+        'setup.py',
+        'src',
+        'tasks.py',
+        'tox.ini',
+        'LICENSE',
+        'MANIFEST.in',
+        'INSTALL.rst',
+        'README.rst',
+        'VERSION',
+    ])
     with visit_dir(gtempdir):
-        default_files = sorted([
-            'boilerplate.ini',
-            '.gitignore',
-            'docs',
-            'src',
-            'requirements.txt',
-            'setup.py',
-            'tasks.py',
-            'LICENSE',
-            'MANIFEST.in',
-            'INSTALL.rst',
-            'README.rst',
-            'VERSION',
-        ])
         files = sorted(os.listdir(os.getcwd()))
         assert files
         assert files == default_files

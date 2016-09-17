@@ -20,7 +20,7 @@ If you've downloaded the tarball, unpack it, and execute::
 
     $ python setup.py install --user
 
-You might prefer to install it as system-wide. In this case, skip the ``--user``
+You might prefer to install it system-wide. In this case, skip the ``--user``
 option and execute as superuser by prepending the command with ``sudo``.
 
 

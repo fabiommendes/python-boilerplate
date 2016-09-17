@@ -11,6 +11,7 @@ Welcome to {{ project }}'s documentation!
 
    Installation instructions <install.rst>
    API documentation <apidoc.rst>
+   Frequently asked questions <faq.rst>
    License <license.rst>
 
 Indices and tables

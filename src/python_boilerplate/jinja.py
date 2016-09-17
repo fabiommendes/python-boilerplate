@@ -3,8 +3,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import base64
+import codecs
 import hashlib
 import os
+import platform
 
 import jinja2
 import six
@@ -55,10 +57,14 @@ def write_template(template, namespace=None, ignore=False, path=None,
             else:
                 return
 
+    abspath = os.path.abspath(path)
     if verbose:
-        io.show('    creating %s...' % os.path.abspath(path))
+        io.show('    creating %s...' % abspath)
 
-    with open(os.path.abspath(path), 'w') as F:
+    # Save data as UTF-8
+    with codecs.open(abspath, 'w', 'utf8') as F:
+        if platform.system() == 'Windows':
+            F.write(codecs.BOM_UTF8)
         F.write(data)
 
     return data

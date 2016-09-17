@@ -117,12 +117,16 @@ class JobWriter(object):
 
         save_config()
 
-    def write(self, template, path=None, ignore=False):
+    def write(self, template, path=None, ignore=True):
         """
         Process contents of template and write them to the given path.
 
         If ignore is true, ignore file if it already exist.
         """
+
+        template = template.replace('/', os.sep)
+        if path:
+            path = path.replace('/', os.sep)
 
         base = os.getcwd()
         file = os.path.join(base, path or template)

@@ -83,48 +83,52 @@ class InitJobWriter(JobWriter):
             ignore = not self.config._has_ini_file
 
         # Version and setup files
-        self.write('VERSION.txt', 'VERSION', ignore=True)
-        self.write('gitignore.txt', '.gitignore', ignore=ignore)
+        self.write('VERSION.txt', 'VERSION')
+        self.write('gitignore.txt', '.gitignore')
 
         # Readme
-        self.write('README.rst', ignore=True)
-        self.write('INSTALL.rst', ignore=ignore)
+        self.write('README.rst')
+        self.write('INSTALL.rst')
 
         # License
         license = license_alias.get(self.config.license, self.config.license)
         license_path = 'license/%s.txt' % license
         self.write(license_path, ignore=ignore, path='LICENSE')
 
+        # Best practices and configurations
+        self.write('tox.ini')
+        self.write('travis.yml', '.travis.yml')
+        self.write('coveragerc.txt', '.coveragerc')
+
         # Tasks
         self.write('tasks.pyt', 'tasks.py', ignore=ignore)
 
         # setup.py and friends
         self.write('setup.pyt', 'setup.py', ignore=ignore)
-        self.write('MANIFEST.in', ignore=ignore)
-        self.write('requirements.txt', ignore=ignore)
+        self.write('MANIFEST.in')
+        self.write('requirements.txt')
 
         # Package structure
         basedir = 'src/%s' % self.pyname
-        self.write('package/init.pyt',
-                   '%s/__init__.py' % basedir, ignore=True)
-        if self.has_scripts:
-            self.write('package/main.pyt',
-                       '%s/__main__.py' % basedir, ignore=ignore)
+        self.write('package/init.pyt', '%s/__init__.py' % basedir)
+        self.write('package/main.pyt', '%s/__main__.py' % basedir)
 
         # Tests
+        self.write('package/test_init.pyt', '%s/tests/__init__.py' % basedir)
+        self.write('package/test_main.pyt', '%s/tests/__main__.py' % basedir)
         self.write('package/test_project.pyt',
-                   '%s/tests/test_%s.py' % (basedir, self.pyname),
-                   ignore=ignore)
+                   '%s/tests/test_%s.py' % (basedir, self.pyname))
 
         # Documentation
-        self.write('docs/conf.pyt', 'docs/conf.py', ignore=ignore)
-        self.write('docs/index.rst', ignore=ignore)
-        self.write('docs/install.rst', ignore=ignore)
-        self.write('docs/license.rst', ignore=ignore)
-        self.write('docs/apidoc.rst', ignore=ignore)
-        self.write('docs/warning.rst', ignore=ignore)
-        self.write('docs/make.bat', ignore=True)
-        self.write('docs/makefile.txt', 'docs/Makefile', ignore=True)
+        self.write('docs/conf.pyt', 'docs/conf.py')
+        self.write('docs/apidoc.rst')
+        self.write('docs/faq.rst')
+        self.write('docs/index.rst')
+        self.write('docs/install.rst')
+        self.write('docs/license.rst')
+        self.write('docs/warning.rst')
+        self.write('docs/make.bat')
+        self.write('docs/makefile.txt', 'docs/Makefile')
 
         # Make sphinx folders
         with visit_dir('docs'):

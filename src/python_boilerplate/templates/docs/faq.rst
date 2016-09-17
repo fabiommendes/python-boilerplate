@@ -16,8 +16,8 @@ author is too busy coding and did not provide a proper FAQ section ;-)
 Concepts
 ========
 
-Why do we want a boilerplate?
------------------------------
+Why do we want an automatic boilerplate?
+----------------------------------------
 
 Because time is precious and we don't want to waste it in repetitive tasks. Copy
 and paste can go a long way creating a new project, but is tedious and error

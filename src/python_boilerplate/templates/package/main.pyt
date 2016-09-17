@@ -1,16 +1,15 @@
 import argparse
-import {{ pyname }}
-from {{ pyname }} import __version__
+import {{ package }}
+from {{ package }} import __version__
 
 
 def get_parser():
     """
     Creates a new argument parser.
     """
-
     parser = argparse.ArgumentParser('{{ project }}')
-    parser.add_argument('--version', '-v', action='version',
-                        version='%(prog)s ' + __version__)
+    version = '%(prog)s ' + __version__
+    parser.add_argument('--version', '-v', action='version', version=version)
     return parser
 
 def main(args=None):
@@ -19,17 +18,16 @@ def main(args=None):
 
     Args:
         args : list
-            A of arguments as if they were input in the command line. Leave it None
-            use sys.argv.
+            A of arguments as if they were input in the command line. Leave it
+            None to use sys.argv.
     """
 
     parser = get_parser()
     args = parser.parse_args(args)
 
     # Put your main script logic here
-    print('List of arguments:')
-    print(args)
+    print('No action defined for {{ package }} module!')
 
 
 if __name__ == '__main__':
-    main(['-h'])
+    main()

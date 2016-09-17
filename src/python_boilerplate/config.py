@@ -137,8 +137,10 @@ def get_context(**kwargs):
         kwargs.setdefault(option, value)
 
     # Additional derived attributes
-    pyname_dashed = cfg.get('options', 'pyname').replace('_', '-')
+    pyname = cfg.get('options', 'pyname')
+    pyname_dashed = pyname.replace('_', '-')
     kwargs.setdefault('pyname_dashed', pyname_dashed)
+    kwargs.setdefault('package', pyname)
     return kwargs
 
 
