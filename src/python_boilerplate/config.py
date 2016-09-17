@@ -1,9 +1,11 @@
-from __future__ import unicode_literals
-from __future__ import print_function
 from __future__ import absolute_import
-import codecs
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import base64
 import hashlib
 import os
+
 try:
     import configparser
 except ImportError:
@@ -61,7 +63,7 @@ class BoilerplateConfig(configparser.ConfigParser):
         """
 
         file_hash = hashlib.md5(data.encode('utf8')).digest()
-        file_hash = codecs.encode(file_hash, 'base64').decode()
+        file_hash = base64.b64encode(file_hash).decode()
         self.set('file hashes', filename, file_hash)
 
     def save(self):
