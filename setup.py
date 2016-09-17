@@ -52,6 +52,7 @@ setup(
         'jinja2',
         'invoke>=0.13',
         'unidecode',
+        'manuel',
         'six',
     ],
     extras_require={

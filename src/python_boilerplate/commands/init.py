@@ -114,10 +114,13 @@ class InitJobWriter(JobWriter):
         self.write('package/main.pyt', '%s/__main__.py' % basedir)
 
         # Tests
-        self.write('package/test_init.pyt', '%s/tests/__init__.py' % basedir)
-        self.write('package/test_main.pyt', '%s/tests/__main__.py' % basedir)
+        test_dir = '%s/tests/' % basedir
+        self.write('package/test_init.pyt', test_dir + '__init__.py')
+        self.write('package/test_main.pyt', test_dir + '__main__.py')
         self.write('package/test_project.pyt',
-                   '%s/tests/test_%s.py' % (basedir, self.pyname))
+                   test_dir + 'test_%s.py' % self.pyname)
+        self.write('package/test_documentation.pyt',
+                   test_dir + 'test_documentation.py')
 
         # Documentation
         self.write('docs/conf.pyt', 'docs/conf.py')
