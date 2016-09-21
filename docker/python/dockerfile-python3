@@ -1,0 +1,22 @@
+# We base on debian:jessie instead of python:3.4 to use the Python version found
+# on apt. This makes the container lighter. Child containers may also benefit 
+# from using apt.
+FROM debian:jessie
+
+ENV PYTHONPATH=/add/src
+
+# Install apt and dependencies
+RUN apt-get update \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
+            python3 \
+            python3-pip \
+            ipython3 \
+            python3-pytest \
+            python3-pytest-cov \
+            python3-mock \
+            python3-jinja2 \
+            python3-unidecode \
+    && rm -rf /var/lib/apt/lists/*
+
+ENTRYPOINT ["ipython"]
+

@@ -8,6 +8,7 @@ import sys
 
 from invoke import run, task
 
+from python_boilerplate.tasks.doc import *
 from python_boilerplate.config import get_context
 from python_boilerplate.tasks import util
 
@@ -92,7 +93,7 @@ def bump_version(ctx, major=False, minor=False, micro=False):
 })
 def test(ctx, pyall=False, py2=False, py3=False):
     """
-    Run pytest.
+    Run py.test.
     """
 
     pytest_worker(pyall=pyall, py2=py2, py3=py3)
@@ -149,6 +150,19 @@ def pytest_worker(pyall=False, py2=False, py3=False, extra_args=None):
         run('python3 -m pytest %s%s' % (test_path, args), env=env)
 
 
+@task(help={
+    'keep_docs': 'do not remove built documentation',
+    'keep_exts': 'preserve compiled C extensions',
+})
+def clean(ctx, keep_docs=False, keep_exts=False):
+    """
+    Clean all build files: docs, C extensions, bytecode, etc.
+    """
+
+    for file, path, ex in os.walk('src'):
+        print(file, path, ex)
+
+
 # @task
 # def lint(ctx):
 #     """
@@ -174,15 +188,6 @@ def pytest_worker(pyall=False, py2=False, py3=False, extra_args=None):
 #
 # @task
 # def release_check(ctx):
-#     print('not ready...')
-#
-#
-# @task
-# def clean(ctx, no_docs=False, no_ext=False):
-#     """
-#     Clean all build files: docs, C extensions, bytecode, etc.
-#     """
-#
 #     print('not ready...')
 #
 #

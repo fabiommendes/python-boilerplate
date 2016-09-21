@@ -11,13 +11,9 @@ import os
 from setuptools import setup, find_packages
 
 # Meta information
-name = 'python-boilerplate'
-pyname = 'python_boilerplate'
-author = 'Fábio Macêdo Mendes'
 version = open('VERSION').read().strip()
 dirname = os.path.dirname(__file__)
 
-# Save version and author to __meta__.py
 # Save version and author to __meta__.py
 path = os.path.join(dirname, 'src', 'python_boilerplate', '__meta__.py')
 data = '''# Automatically created. Please do not edit.
@@ -31,7 +27,7 @@ setup(
     # Basic info
     name='python-boilerplate',
     version=version,
-    author=author,
+    author='Fábio Macêdo Mendes',
     author_email='fabiomacedomendes@gmail.com',
     url='https://github.com/fabiommendes/python-boilerplate',
     description='Creates the skeleton of your Python project.',
@@ -54,12 +50,11 @@ setup(
         'unidecode',
         'manuel',
         'six',
+        'pytest',
+        'mock',
     ],
     extras_require={
-        'dev': [
-            'pytest',
-            'mock',
-        ],
+        'dev': [],
     },
 
     # Data files

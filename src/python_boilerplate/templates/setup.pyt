@@ -8,6 +8,7 @@
 #
 {% endif %}
 import os
+import codecs
 from setuptools import setup, find_packages
 
 # Save version and author to __meta__.py
@@ -29,7 +30,7 @@ setup(
     author_email='{{ email }}',
     url='{{ url|default(github) }}',
     description='{{ short_description|default("A short description for your project.") }}',
-    long_description=open('README.rst').read(),
+    long_description=codecs.open('README.rst', 'rb', 'utf8').read(),
 
     # Classifiers (see https://pypi.python.org/pypi?%3Aaction=list_classifiers)
     classifiers=[

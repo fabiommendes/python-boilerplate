@@ -112,6 +112,7 @@ class InitJobWriter(JobWriter):
         basedir = 'src/%s' % self.pyname
         self.write('package/init.pyt', '%s/__init__.py' % basedir)
         self.write('package/main.pyt', '%s/__main__.py' % basedir)
+        self.write('package/meta.pyt', '%s/__meta__.py' % basedir)
 
         # Tests
         test_dir = '%s/tests/' % basedir

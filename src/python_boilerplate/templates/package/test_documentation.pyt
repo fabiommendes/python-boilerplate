@@ -24,8 +24,10 @@ def make_manuel_suite(ns):
     cd = os.path.dirname
     path = cd(cd(cd(cd(__file__))))
     doc_path = os.path.join(path, 'docs')
+    readme = os.path.join(path, 'README.rst')
     files = sorted(os.path.join(doc_path, f) for f in os.listdir(doc_path))
-    files = (f for f in files if f.endswith('.rst') or f.endswith('.txt'))
+    files = [f for f in files if f.endswith('.rst') or f.endswith('.txt')]
+    files.append(readme)
 
     # Create manuel suite
     m = manuel.ignore.Manuel()
