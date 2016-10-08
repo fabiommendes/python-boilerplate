@@ -11,5 +11,10 @@ from python_boilerplate.tasks import util
 
 
 @task
-def docker_dev(ctx):
-    pass
+def clean(ctx):
+    """
+    Clean unused images and containers.
+    """
+
+    run('docker rm $(docker ps -a -q)')
+    run('docker rmi $(docker images -q --filter dangling=true')

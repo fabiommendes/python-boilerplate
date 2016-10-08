@@ -8,6 +8,7 @@ import sys
 
 from invoke import task, run
 
+from python_boilerplate import io
 from python_boilerplate.config import get_option
 
 PATH = os.path.dirname(__file__)
@@ -39,10 +40,10 @@ def migrate(ctx, make=False, app=None, runserver=False):
     """
 
     app_suffix = ' %s' % app if app else ''
-    if make:
+    if make or io.yn_input('Execute makemigrations? ') == 'yes':
         run("python src/manage.py makemigrations" + app_suffix)
     run("python src/manage.py migrate" + app_suffix)
-    if runserver:
+    if runserver or io.yn_input('Execute runserver? ') == 'yes':
         run('python src/manage.py runserver')
 
 
@@ -125,20 +126,20 @@ def rmmigrations(ctx, auto=False, initial=False, all=False, db=False):
     def is_migration(path):
         return len(path) >= 4 and path[:4].isdigit() and path.endswith('.py')
 
-    for dir, subdirs, files in os.walk(os.getcwd()):
-        if os.path.basename(dir) == 'migrations':
+    for base, subdirs, files in os.walk(os.getcwd()):
+        if os.path.basename(base) == 'migrations':
             migrations = [f for f in files if regex.match(f)]
             for f in migrations:
-                path = os.path.join(dir, f)
-                if keep_data and f[5:].startswith('initial_data'):
-                    continue
+                remove = all
+                if auto and '_auto_' in f:
+                    remove = True
+                if initial and f.endswith('_initial.py'):
+                    remove = True
 
-                print('removing %s' % path, end='')
-                if not fake:
+                if remove:
+                    path = os.path.join(base, f)
+                    print('removing %s' % path)
                     os.unlink(path)
-                    print(' ..OK')
-                else:
-                    print()
 
 
 #

@@ -48,13 +48,16 @@ setup(
         'jinja2',
         'invoke>=0.13',
         'unidecode',
-        'manuel',
         'six',
-        'pytest',
-        'mock',
     ],
     extras_require={
-        'dev': [],
+        'dev': [
+            'manuel',
+            'pytest',
+            'pytest-cov',
+            'coverage',
+            'mock',
+        ],
     },
 
     # Data files

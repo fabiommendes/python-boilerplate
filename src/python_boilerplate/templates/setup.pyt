@@ -16,8 +16,8 @@ version = open('VERSION').read().strip()
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, 'src', {{ pyname|repr }}, '__meta__.py')
 meta = '''# Automatically created. Please do not edit.
-__version__ = u'%s'
-__author__ = u{{ author|unicode_escape|repr }}
+__version__ = '%s'
+__author__ = {{ author|unicode_escape|repr }}
 ''' % version
 with open(path, 'w') as F:
     F.write(meta)
@@ -56,9 +56,7 @@ setup(
     ],
     extras_require={
         'dev': [
-            'python-boilerplate',
-            'invoke>=0.13',
-            'pytest',
+            'python-boilerplate[dev]',
         ],
     },
     {%- if has_script|default(True) %}

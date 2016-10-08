@@ -8,18 +8,8 @@ def index_view(request):
 <html>
 <head>
     <title>Dockerized Django Test Server</title>
-    <style>
-        body {
-            margin: 40px;
-            font-family: sans;
-        }
-
-        pre {
-            padding: 20px;
-            background: #eee;
-            font-family: monospace;
-        }
-    </style>
+    <!-- This stylesheet is served by Nginx! -->
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
@@ -47,5 +37,5 @@ ADD . /app
 """)
 
 urlpatterns = [
-    url(r'^', index_view),
+    url(r'^$', index_view),
 ]

@@ -1,3 +1,3 @@
 # Automatically created. Please do not edit.
-__version__ = u'{{ version }}'
-__author__ = u{{ author|unicode_escape|repr }}
+__version__ = '{{ version }}'
+__author__ = {{ author|unicode_escape|repr }}
