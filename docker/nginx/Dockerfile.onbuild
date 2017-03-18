@@ -8,4 +8,5 @@ FROM nginx:1.11
 # Nginx config
 
 ADD nginx.conf /etc/nginx/nginx.conf
-VOLUME ["/sock/", "/var/www/"]
+VOLUME ["/sock/"]
+ONBUILD ADD collect/ /var/www/

@@ -34,3 +34,25 @@ Some Linux distributions (e.g. Ubuntu) install Python without installing pip.
 Please install it before. If you don't have root privileges, download the
 get-pip.py script at https://bootstrap.pypa.io/get-pip.py and execute it as
 ``python get-pip.py --user``.
+
+
+Development
+-----------
+
+If you want to develop for {{ project }}, first clone the git repository with the
+command
+
+::
+
+    $ git clonte {{ git_repository }}
+
+After cloning, install the dependencies with::
+
+    $ pip install -e .[dev]
+
+It may also be convenient to install {{ project }} in your system. For doing so,
+please use the command
+
+::
+
+    $ python setup.py develop
