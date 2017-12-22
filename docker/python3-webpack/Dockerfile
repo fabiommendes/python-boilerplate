@@ -1,5 +1,11 @@
+# This image has django, gunicorn, nodejs, npm, webpack, and sass.
+# Child containers can override the Django version by specifying it during
+# pip installation. We install a Django app for convenience so the base
+# image always have something to show.
+
 # This image has Python3 and Nodejs with npm and webpack. This is useful for
 # mixed web development with a python/javascript stack
+
 FROM pythonboilerplate/python3
 
 

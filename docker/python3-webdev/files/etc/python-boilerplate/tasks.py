@@ -61,7 +61,7 @@ def gunicorn(ctx, exec=True):
         os.execlp('gunicorn', '-b', sock, wsgi_application, '--reload')
     else:
         cmd = 'gunicorn $WSGI_APPLICATION -b unix:/tmp/webapp.sock --reload'
-        run(cmd, pty=True)
+        ctx.run(cmd, pty=True)
 
 
 @task(help={
@@ -76,10 +76,10 @@ def start(ctx, system=True):
     #os.spawnlp(os.P_NOWAIT, 'nginx', '-p', '/var/www', '-c', '/etc/nginx/nginx.conf')
     wsgi = os.environ.get('WSGI_APPLICATION', 'app')
     if system:
-        run('nginx -p /var/www -c /etc/nginx/nginx.conf')
-        run('gunicorn -b unix:/tmp/webapp.sock %s --reload' % wsgi, pty=True)
+        ctx.run('nginx -p /var/www -c /etc/nginx/nginx.conf')
+        ctx.run('gunicorn -b unix:/tmp/webapp.sock %s --reload' % wsgi, pty=True)
     else:
-        run('nginx -p /var/www -c /etc/nginx/nginx.conf')
+        ctx.run('nginx -p /var/www -c /etc/nginx/nginx.conf')
         sock = 'unix:/tmp/gunicorn.sock'
         os.execlp('gunicorn', '-b', sock, wsgi, '--reload')
 

@@ -1,9 +1,9 @@
-# We base on debian:jessie instead of python:3.4 to use the Python version found
-# on apt. This makes the container lighter. Child containers may also benefit 
+# We base on debian:stretch-slim instead of python:3.5 in order to use the
+# Python version found on apt. This makes the container lighter, but the Python
+# version is not the most up-to-date. Child containers may also benefit
 # from using the Python version on apt since they can use binary packages
-# without the hassle of installing a C compiler and all python-dev stack.
-
-FROM debian:jessie
+# without the hassle of installing a C compiler and all the python-dev stack.
+FROM debian:stretch-slim
 
 MAINTAINER Fábio Macêdo Mendes <fabiomacedomendes@gmail.com>
 
@@ -28,14 +28,18 @@ RUN mkdir /app/ &&\
             curl \
             python3 \
             python3-pip \
+            python3-setuptools \
+            python3-wheel \
             python3-pytest \
             python3-pytest-cov \
             python3-jinja2 \
             python3-unidecode &&\
-    rm -rf /var/lib/apt/lists/* &&\
-    \
-    # Install python-boilerplate from pip
-    pip3 install python-boilerplate &&\
+    rm -rf /var/lib/apt/lists/*
+
+
+# Install python-boilerplate from pip
+
+RUN pip3 install python-boilerplate &&\
     rm ~/.pip/cache -rf
 
 

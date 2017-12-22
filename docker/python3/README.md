@@ -1,7 +1,6 @@
 Python 3 images
 ===============
 
-
 *pythonboilerplate/python3:latest* image provides a simple Python 3.4 
 installation from *debian:jessie* repositories. It includes the Python 
 interpreter, pip, python-boilerplate, py.test and invoke. This can be used
@@ -14,7 +13,7 @@ source code is under /app/src/.
 Environment variables 
 ---------------------
 
-This image define a few useful variables:
+This image defines a few useful variables:
 
 * **PYTHONPATH=/app/src**
   Makes packages in your repository immediately available to the Python interpreter.
@@ -39,12 +38,19 @@ Specialized images
 * **pythonboilerplate/python3:dev**
   Include development packages, Cython and build dependencies for Python. This is usefull if you want to compile packages from 
   source. This image is **much** larger than **python3:latest**. If you need to optimize for image size, consider pulling 
-  the dev dependencies manually, compiling your packages and finally cleaning up in a single RUN command.
+  the dev dependencies manually, compiling your packages and finally cleaning up on a single RUN command.
   
   
-* **pythonboilerplate/python3:scipy*
+* **pythonboilerplate/python3:scipy**
   This image is based on python3:dev and also includes core scientific libraries such as numpy, scipy, sympy, and matplotlib. 
   When executed, this image opens a ipython notebook server on port 8000.
+  
+      $ docker run -p 8000:8000 pythonboilerplate/python3:scipy
+    
+    
+* **pythonboilerplate/python3:nodejs**
+  This image is based on python3:latest and also includes node.js. This is useful in mixed Python/Javascript
+  enviroments (usually on web development).
   
       $ docker run -p 8000:8000 pythonboilerplate/python3:scipy
     

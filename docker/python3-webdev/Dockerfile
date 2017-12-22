@@ -1,3 +1,6 @@
+# This is a base docker image suitable for Python web development. It includes
+# node.js and gunicorn.
+
 FROM pythonboilerplate/python3:nodejs
 
 

@@ -2,7 +2,7 @@
 # usage. This image should be chosen by those that need to compile C extensions
 # from the source.
 
-FROM pythonboilerplate/python3
+FROM pythonboilerplate/python3:latest
 
 
 # Install apt development dependencies. This image includes Python headers,

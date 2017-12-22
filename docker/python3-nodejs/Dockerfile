@@ -1,4 +1,4 @@
-# This image has Python3 and Nodejs. This is useful for amixed web development 
+# This image has Python3 and Nodejs. This is useful for a mixed web development
 # with a python/javascript stack
 FROM pythonboilerplate/python3
 
