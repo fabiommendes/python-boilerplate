@@ -34,12 +34,10 @@ RUN mkdir /app/ &&\
             python3-pytest-cov \
             python3-jinja2 \
             python3-unidecode &&\
-    rm -rf /var/lib/apt/lists/*
-
-
-# Install python-boilerplate from pip
-
-RUN pip3 install python-boilerplate &&\
+    rm -rf /var/lib/apt/lists/* &&\
+    \
+    # Install python-boilerplate from pip
+    pip3 install python-boilerplate &&\
     rm ~/.pip/cache -rf
 
 

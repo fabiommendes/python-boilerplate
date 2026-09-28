@@ -96,6 +96,7 @@ class InitJobWriter(JobWriter):
         self.write(license_path, ignore=ignore, path='LICENSE')
 
         # Best practices and configurations
+        self.write('pytest.ini')
         self.write('tox.ini')
         self.write('travis.yml', '.travis.yml')
         self.write('coveragerc.txt', '.coveragerc')
@@ -107,6 +108,7 @@ class InitJobWriter(JobWriter):
         self.write('setup.pyt', 'setup.py', ignore=ignore)
         self.write('MANIFEST.in')
         self.write('requirements.txt')
+        self.write('setup.cfg')
 
         # Package structure
         basedir = 'src/%s' % self.pyname

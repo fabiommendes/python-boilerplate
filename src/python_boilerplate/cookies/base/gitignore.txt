@@ -1,0 +1,28 @@
+# Cached results
+__pycache__/
+*.egg-info/
+
+# Unwanted files
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.egg
+*.sqlite3
+.coverage
+
+# Build directories
+docs/_build/
+build/
+dist/
+
+# Python-boilerplate auto generated files
+src/{{ pyname }}/__meta__.py
+
+# IDEs
+.idea/
+.cache/
+
+# Testing and temporary files
+.tox/

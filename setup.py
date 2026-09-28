@@ -67,13 +67,21 @@ setup(
             'templates/license/*.*',
             'templates/docs/*.*',
             'templates/package/*.*'
+
+            # Base cookie
+            'cookies/base/*.*',
+            'cookies/docker/*.*',
+            'cookies/docs/*.*',
+            'cookies/{{ package_name }}/*.*',
+
         ],
     },
 
     # Scripts
     entry_points={
         'console_scripts': [
-            'python-boilerplate = python_boilerplate.__main__:main'],
+            'python-boilerplate = python_boilerplate.__main__:main',
+        ],
     },
 
     # Other configurations
