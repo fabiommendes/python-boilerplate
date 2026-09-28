@@ -123,7 +123,7 @@ html_theme = 'alabaster'
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
-# The name for this set of Sphinx documents.  If None, it defaults to
+# The name for this set of Sphinx documents.  If None, it get_defaults to
 # "<project> v<release> documentation".
 #html_title = None
 

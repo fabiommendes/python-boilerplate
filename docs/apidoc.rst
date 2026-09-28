@@ -2,7 +2,7 @@
 API Reference
 =============
 
-API documentation for the python-boilerplate module.
+API documentation for the Jarbas module.
 
-.. automodule:: python-boilerplate
+.. automodule:: jarbas
    :members:

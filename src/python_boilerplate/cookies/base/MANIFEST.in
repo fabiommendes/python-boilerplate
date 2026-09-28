@@ -1,6 +1,0 @@
-include INSTALL.rst
-include README.rst
-include LICENSE
-include VERSION
-include requirements.txt
-include tasks.py

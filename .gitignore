@@ -1,20 +1,66 @@
-# Cached builds
+#
+# Build files and folders
+#
 __pycache__/
+*.egg-info/
+build/
+dist/
+.tox/
 *.pyc
 *.pyo
 *.pyd
+*.egg
+*.o
 *.so
 *.dll
-*.egg
-*.egg-info/
+*.exe
+*.com
+*.class
+.coverage
+.coverage.xml
 
-# IDE and editors
+
+#
+# IDEs and editors
+#
 .cache/
 .idea/
+.vscode/
 .project/
-.tox/
 
-# Build directories
-docs/_build/
-build/
-dist/
+
+#
+# Packages
+#
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.bak
+
+
+#
+# Logs and private data
+#
+*.log
+*.sql
+*.sqlite
+/local/
+
+
+#
+# OS and tool generated files
+#
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+*#

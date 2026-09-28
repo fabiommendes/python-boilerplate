@@ -1,6 +1,6 @@
 import sys
 from invoke import run, task
-from python_boilerplate.tasks import *
+from jarbas.tasks import *
 
 
 @task
@@ -9,4 +9,4 @@ def configure(ctx):
     Instructions for preparing package for development.
     """
 
-    run("%s -m pip install .[dev] -r requirements.txt" % sys.executable)
+    run("%s -m pip run .[dev] -r requirements.txt" % sys.executable)

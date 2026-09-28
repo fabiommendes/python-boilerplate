@@ -4,17 +4,321 @@
 .. image:: https://coveralls.io/repos/github/fabiommendes/python-boilerplate/badge.svg?branch=master
     :target: https://coveralls.io/github/fabiommendes/python-boilerplate?branch=master
 
+======
+Jarbas
+======
 
-Starting a new Python project from the scratch is boring and error prone:
-* First create a setup.py script
-* Create documentation
-* Provide installation instructions
-* A README file
-* Write tests
-* etc, etc, etc.
+Jarbas is a workflow automation tool that takes care of many of your projects
+chores so that you can spend more time doing things that matter:
 
-This time-consuming and error prone work gives little satisfaction, but is
-necessary to make your project a good citizen in the open source community.
+* Coding new features;
+* Writing more tests;
+* Creating great documentation;
+* Investigating new algorithms and possibilities;
+
+instead of the "necessary evils" of software development, such as
+
+* Writing repetitive boilerplate to support tools;
+* Writing readmes, changelogs, and other info that makes your project a good
+citizen in the open source community;
+* Searching for obscure git command options to fix a messed up commit;
+* Spend an hour going through a long manual "checklist" because you want to
+to make a bugfix release, then discoverd you missed an important step and will
+have to do another release;
+* Tweaking Dockerfiles and continuous integration configurations until
+they finally work;
+* etc, etc, etc...
+
+With Jarbas, we can automate many chores and minimize the chance of errors
+during a project lifecycle. The goal is to be sufficiently opinionated that we
+can expect a predictable workflow amenable to automation, but is still be
+lightweight enough that users can do things by themselves, if they want. Most of
+Jarbas functionality is implemented using plugins, so if you want things to behave
+a little bit differently, you can implement your own plugins or modify existing
+ones.
+
+
+Getting started
+===============
+
+The first step as a Jarbas user is to configure the global settings
+
+.. code-block:: shell
+
+    $ jarbas config
+
+The tool will ask you a few questions and it will store the answers for later use.
+
+After the global configuration is done, you can create Jarbas new projects. Go
+to the folder where the project is located (or create one if the project does
+not exist) and type the command
+
+.. code-block:: shell
+
+    $ jarbas new-project .
+
+After you fill up a few questions, you will have a bare-bones Jarbas project.
+It provides a very basic structure, with configurations, a task.py script and
+a git repository. It does not even provide a basic Python package structure (as
+Jarbas can also be used to manage projects written in other programming languages).
+
+You probably will want to provide a little more structure to your project.
+Jarbas has a plugin system in which each plugin is responsible to add some
+specific functionality to a working project. Say we want to start a Python
+project, hence we want a basic package structure that is compatible with PyPI.
+Jarbas provides the scaffold via the core/python-package plugin:
+
+.. code-block:: shell
+
+    $ jarbas install core/python-package
+
+Just as before, it will ask a few questions and create the necessary files under
+your project structure.
+
+The default scaffold is intentionally very minimalistic and provides a basic
+configuration for Python packaging and does not do much more. Jarbas has the
+philosophy that things should **Just Work (tm)** with minimal effort. After the
+initial setup of the core/python-package plugin, for instance, your package should
+be ready to be deployed to PyPI with a simple command. Add the Docker plugin,
+and it will provide working Docker images. Add the CI package, and you project
+will successfully build on Travis.
+
+Jarbas assumes that project management tasks are controlled by invoke, which is
+a neat Python tool similar to the venerable Unix **Make**. Most functionality
+is provided by invoke tasks, for instance,
+
+.. code-block:: shell
+
+    $ inv publish
+
+should run a series of sanity checks and, if everything goes well, will publish
+your package on Git. We provide a series of standard tasks when a project is
+created, and each plugin can add its own set of tasks.
+
+
+Jarbas workflow
+===============
+
+
+
+
+How does it work on practice?
+
+Let us start with a working session of a Jarbas project. Open a terminal window
+and hit ``$ jarbas hello <project name>``. That will put you on the correct
+folder and initialize a few things such as activating the correct virtualenv
+and maybe setting a few environment variables and executing other small chores.
+Code, code, code.  When you are done with work, type ``$ jarbas goodbye``. It
+will make sure you don't have any pending activities and, if so, it will direct
+you to quick solutions (such as making a pending commit and running tests to
+ensure everything is still working).
+
+
+What Jarbas can do for me?
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On its own, not very much ;)
+
+Jarbas is built on top of a few great tools and tries its best to integrate
+them:
+
+* Git for version control;
+* Docker for making predictable runtimes;
+* Cookiecutter for creating scaffolds;
+* Invoke for running tasks;
+* A plugin system to make things extensible;
+
+So must of work is actually done by Jarbas plugins and it depends heavily in
+what the plugin aims to support. Plugins can create new scaffolds, expose
+specific tasks and point to specially created docker images that guarantees
+that tools behave as expected.
+
+Since all Jarbas projects depend on those tools let us cover some of those
+generic tasks:
+
+**inv setup**
+This will fetch all required dependencies (e.g., by using pip install) and will
+configure the project for starting development.
+
+
+**inv run**
+This will run the main executable of your project. If there is no natural
+executable, it will fire the test suite.
+
+
+**inv sync-remote**
+This task assumes that the project has (possibly equal) origin and upstream
+repositories. It will fetch from origin ???
+
+
+**inv publish**
+This will commit the last changes and push them to origin.
+
+
+**inv release**
+This will commit the last changes and push them to origin.
+
+
+
+
+Jarbas vs. cookiecutter
+-----------------------
+
+Since Jarbas helps you to scaffold the basic structure of your package, it is
+natural to compare it to the excellent cookiecutter library. As a matter of fact,
+Jarbas depends on cookiecutter and uses it internally to scaffold projects. It
+however differs from cookiecutter in some significant aspects:
+
+* Jarbas provides a way to increment your project gradually by composing
+different jarbas-aware cookiecutters. We call those cookiecutters "nibs".
+* While Jarbas strives to be reasonably flexible and generic, it assumes more
+about your project structure than cookiecutter. For instance, Jarbas requires
+a configuration file and largely assumes that git is used for version control,
+and invoke is used for task management.
+* Nibs are distributed as regular Python packages and have well defined
+cookiecutter and Python interfaces. Each nib registers hooks using setuptools's
+entry_points that can specify custom behavior and dependencies. Differently from
+cookicutters, NIbs are not directly fetched from git repos, but must be
+installed with pip.
+* Jarbas can (and often) provide multiple nibs in a single repository.
+* We don't like very much how cookiecutter gathers information from the users,
+so we reworked this part in Jarbas.
+* More to the point, Jarbas helps you to manage your workflow after the project
+is created while cookiecutter just creates the initial scaffold.
+
+
+**Jarbas packages**
+
+A package is a Python package that can produce a cookiecutter scaffold. Packages
+are designed to be freely combinable inside an existing project.
+
+When developing a new package, the author must pay attention to some key
+differences compared with cookiecutter:
+
+**Packages are more strict**
+
+Cookiecutter provides a lot of flexibility that Jarbas packages do not support.
+A few important points should be kept in mind:
+
+* The root folder of your project should always be called '{{cookiecutter.project_slug}}'
+* The cookiecutter.json file must contain a field named ``"_jinja2_ext": ["jarbas.jinja2"]``
+(you can require additional extensions, but jarbas.jinja2 must be always present).
+* pre_install and post_install hooks must always be Python 3.4+ scripts.
+* Jarbas does not necessarely use information from cookiecutter.json.
+* The pre and post install hooks are declared in the Python package part of
+the package and not as standalone scripts. You can provide those scripts, but
+they will be ignored during the scaffold creation.
+
+**Packages require additional files**
+
+Your
+
+**Packages can provide extra hooks**
+
+Cookiecutter provides a pre_install_hook.py and a
+
+
+**Packages declare dependencies**
+
+sdfsdf
+
+
+**Groups of packages must be distributed as python packages**
+
+
+**package execution workflow**
+
+Think of a package as an scaffold for producing cookiecutters (which will then
+produce resources to your project). The package engine starts by loading a Python
+package that has a ``cookiecutter-data`` subfolder. This folder is mostly a
+regular cookiecutter project which you can even use independently from Jarbas.
+
+However, Jarbas never execute this cookiecutter directly. Instead, it creates a
+temporary folder (usually under <project>/build/tmp/<package name>-package/) and
+starts the process of generating a customized cookiecutter.
+
+* First, it calls the ``<package>.prepare_empty(project_conf, tmp_folder)``
+function inside your package that may execute any number of arbitrary
+preparations for the empty temporary build project. The default behavior is to
+do nothing in this stage.
+
+* It then calls the ``<package>.prompt_user(initial_conf, project_conf, tmp_folder)``
+function which will ask any number of questions to the user and return a
+dict used to construct the cookiecutter.json file in the destination folder.
+
+* Jarbas calls the ``<package>.prepare_cookiecutter(package_conf, project_conf, tmp_folder)``
+hook for finalizing the cookiecutter template. This function can take any number
+of actions based on the user input stored in the package_conf dictionary.
+
+* Finally, Jarbas creates the ``<project>/build/tmp/<package name>-build/`` folder
+and run cookiecutter with the ``--no-input`` flag to create the scaffold that
+should be merged into your project.
+
+* Jarbas replaces the pre_build_hook.py and post_build_hook.py files to call
+the ``<package>.pre_build_hook(package_conf, project_conf, tmp_folder)`` and
+``<package>.post_build_hook(package_conf, project_conf, tmp_folder)`` functions in
+your package package.
+
+* When the scaffold is ready, Jarbas starts the task of merging each file
+generated into the project main tree. The process proceeds as follows:
+    - It starts by doing all safe merges, which include all files that either
+    do not exist or are identical to existing files in the project.
+    -  If there are some unsafe merges to be done, Jarbas will call
+    ``<package>.merge_hints(package_conf, project_conf, tmp_folder)``, which must
+    return a dictionary from file names to the hint object that should be
+    applied to them. Hints are declared in the jarbas.merge_hints package.
+    - The default merging strategy is to show a diff of both files and prompt
+    the user if he/she wants to keep the current file, replace by the new one or
+    use a merge tool to merge both.
+
+* After all files are merged, it updates the config in ``<project>/conf/jarbas.ini``.
+and remove the temporary files.
+
+
+
+#####
+
+Jarbas is a helpful tool that happily do many code-related chores for you. This
+is a brief list of what it can do:
+
+* Create a project boilerplate that can grow with time.
+* Suggest tools and ways in which you can improve your code.
+* Automate your development pipeline with good tools practices (tests, continuous 
+  integration, containerization, continuous deploy, etc)
+* And case you are lost, teach you what those buzzwords are and when/why you 
+  should care about them :)
+
+Jarbas is both a practical tool and a research project in which can we explore
+the limits of automation in software production.
+
+
+**What do I need?**
+
+Jarbas is Python-based technology and is primarily focused on Python projects.
+Partial support for other languages may be provided using plugins, but we focus
+only on languages that are likely to be integrated on Python projects (such as C,
+Cython, and a bit of Javascript for web development). Jarbas assumes a basic
+POSIX tooling and integrates with common Linux specific technologies such as
+Docker. Neither have we tested it on Windows or Mac, nor we have the resources
+or inclination to maintain a port.
+
+In order to begin a project with Jarbas, simply type the command::
+
+    $ jarbas init
+
+It will ask you a few questions and create a basic skeleton for your project.
+It is intentionally a very simple skeleton with only a few files:
+
+* A setup.py script with a few configuration files.
+* README.rst and INSTALL.rst files.
+* A /src/ folder where you can start your project.
+
+It also initializes a git repository and ask if you want to create a virtualenv.
+You will notice that Jarbas is very polite and always explain which steps it is
+going to execute and it will even point you to external resources with further
+explanations.
+
+
 
 python-boilerplate produces skeletons for your Python projects so you can get
 up and running fast. It is influenced by this blog post:
@@ -74,6 +378,8 @@ to edit this file and provide the short description of the project.
 
 Don't forget to ``python setup.py register`` your project to PyPI before someone
 takes it name!
+
+https://blog.ionelmc.ro/presentations/packaging/#slide:6
 
 
 src/*

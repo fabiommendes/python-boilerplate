@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec inv -r /etc/python-boilerplate/tasks.py start
