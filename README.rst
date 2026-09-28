@@ -1,3 +1,7 @@
+.. warning::
+
+   This project is no longer maintained. For project templates use `copier <https://copier.readthedocs.io>`_ or `cookiecutter <https://github.com/cookiecutter/cookiecutter>`_; for task automation use `invoke <https://www.pyinvoke.org>`_. Unfinished work lives in the `jarbas-wip` and `cookies-wip` branches.
+
 .. image:: https://travis-ci.org/fabiommendes/python-boilerplate.svg?branch=master
     :target: https://travis-ci.org/fabiommendes/python-boilerplate
 
